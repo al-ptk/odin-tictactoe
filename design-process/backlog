@@ -12,7 +12,11 @@ Implementation details:
 
     HTML-DOM:
 
-        •
+        • Create the pickGameMode modal (vs player, vs ai)
+        • Create the pickGridSize modal (3x3, 5x5, 7x7)
+        • Create Title screen with new game button
+        • Create Grid screen with the current match
+        • The flow of the app will be seen by openinig-closing modals, as well as changing screens (detach one, attach another).
 
 Features that could be cool:
 
