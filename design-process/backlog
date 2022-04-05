@@ -1,0 +1,21 @@
+Implementation details:
+
+    Javascipt:
+    
+        • A function that checks if a possible index is out of bounds
+        • The player factory and game module
+    
+    CSS:
+
+        • Find decent symbols to use in the game, that are svg
+        • Figure out how to change the color of embeded svg
+
+    HTML-DOM:
+
+        •
+
+Features that could be cool:
+
+    • Each person can customize their symbol and color
+    • The game has different color schemes
+    • Maybe putting a three people mode?
