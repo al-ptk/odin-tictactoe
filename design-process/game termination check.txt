@@ -2,6 +2,14 @@
 // In normal tictactoe, the winning line is 3,
 // but bigger grids have a 4-unit line
 
+// Keep track of all moves made by each player
+// Keep the numbers in ascending order
+
+// Winning rules for 3x3 grid
+// Vertical: n, n + w, n + (w * 2)
+// Horizontal: n, n + 1, n + 2
+// Backslash: n, n + w + 1, n + (w + 1) * 2
+// Forwardslash: n, n + (w - 1), n + (w - 1) * 2
 
 proc IsGameOver
 

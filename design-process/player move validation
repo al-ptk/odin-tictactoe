@@ -1,0 +1,4 @@
+proc makeMove
+    Take player's input
+    Check if player's move is valid
+    Apply player's move to board
