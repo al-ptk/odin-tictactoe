@@ -1,0 +1,61 @@
+Render titlescreen that asks for # of players
+    if 2 players, make two player objects
+    if 1 player, make a player objact and a playerAI object
+set scores to 0
+matchLoop()
+
+proc matchLoop
+    Ask grid size
+    create and render new grid
+
+    while true:
+        player1.makeMove()
+        
+        If (!IsGameOver()) break
+
+        //player2.makeMove()
+        playerAI.makeMove()
+
+        If (!IsGameOver()) break
+
+    Ask if resetGame
+    if (resetGame)
+        update score
+        matchLoop()
+    else
+        empty scores
+        render title screen
+
+
+proc makeMove
+    Take player's input
+    Check if player's move is valid
+    Apply player's move to board
+
+
+proc IsGameOver
+    Check if there is a win condition on board
+        If so, game is over
+        Announce winner
+        return true
+
+    Check if there is no more valid moves
+        If so, game is over
+        Announce tie
+        return true
+    
+    return false
+
+
+proc resetGame
+    Ask if wants to play again
+        If play again
+            Update score
+
+        else
+            go to title screen
+
+===================================================
+
+Do I keep score? Sure!
+Do I create a three-player game? Perhaps. It is out of scope, though. So no.
