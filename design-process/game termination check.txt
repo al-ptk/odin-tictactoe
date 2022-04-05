@@ -19,14 +19,19 @@ For all cached win conditions
         if all indexes have same symbol
             return 'WON!!'
 
+WINNER! (for now)
 Possible Solution #2 — caching links instead of cells
 take recent move
 if any same-symbol neighbours
     cache link
 if two links have a number in common
-    if the two different numbers fit one of the
-wincon lines
-        announce winner
+    sort all indexes by ascending order
+    if fit Horizontal
+       or fit Vertical
+       or fit Backslash
+       or fit Forwardslash
+            return 'win'
+
 
 
 proc IsGameOver
