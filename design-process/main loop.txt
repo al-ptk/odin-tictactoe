@@ -1,0 +1,26 @@
+Render titlescreen 
+
+function newMatch()
+    ask player number
+    ask grid size
+    create grid
+
+    while true:
+        player1.makeMove()
+        [IsGameOver, result] = checkForGameOver()
+        if (IsGameOver) break;
+        player2.makeMove();
+        [IsGameOver, result] = checkForGameOver()
+        if (IsGameOver) break;
+    
+    announce result
+    update score
+
+// The logic below shall
+//  make more sense in code
+ask if play again
+? newMatch ()
+: {
+    resetScore ()
+    render titlescreen ()
+}
