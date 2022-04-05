@@ -19,7 +19,14 @@ For all cached win conditions
         if all indexes have same symbol
             return 'WON!!'
 
-Possible Solution #2 — caching chains
+Possible Solution #2 — caching links instead of cells
+take recent move
+if any same-symbol neighbours
+    cache link
+if two links have a number in common
+    if the two different numbers fit one of the
+wincon lines
+        announce winner
 
 
 proc IsGameOver
