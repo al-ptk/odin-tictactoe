@@ -1,0 +1,16 @@
+// What is the line size for winning?
+// In normal tictactoe, the winning line is 3,
+// but bigger grids have a 4-unit line
+
+
+proc IsGameOver
+
+    Check if there is a win condition on board
+        If so, game is over
+            return true, winner 
+
+    Check if there is no more valid moves
+        If so, game is over
+            return true, 'tie'
+    
+    return false
