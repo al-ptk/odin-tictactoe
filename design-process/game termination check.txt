@@ -1,22 +1,38 @@
-// What is the line size for winning?
-// In normal tictactoe, the winning line is 3,
-// but bigger grids have a 4-unit line
+What is the line size for winning?
+In normal tictactoe, the winning line is 3,
+but bigger grids have a 4-unit line
 
-// Keep track of all moves made by each player
-// Keep the numbers in ascending order
+Keep track of all moves made by each player
+Keep the numbers in ascending order
 
-// Winning rules for 3x3 grid
-// Vertical: n, n + w, n + (w * 2)
-// Horizontal: n, n + 1, n + 2
-// Backslash: n, n + w + 1, n + (w + 1) * 2
-// Forwardslash: n, n + (w - 1), n + (w - 1) * 2
+Winning rules for 3x3 grid with 3-unit line
+Vertical: n, n + w, n + (w * 2)
+Horizontal: n, n + 1, n + 2
+Backslash: n, n + w + 1, n + (w + 1) * 2
+Forwardslash: n, n + (w - 1), n + (w - 1) * 2
+
+Possible Solution #1
+Cache all win conditions
+Take the index of last move made
+For all cached win conditions
+    if the index is in the a particular win condition
+        if all indexes have same symbol
+            return 'WON!!'
+
+Possible Solution #2 — caching chains
+
 
 proc IsGameOver
-
+    take the last move made by the player 
+    // that way, I only need to check around that point,
+    // not the whole grid
     Check if there is a win condition on board
         If so, game is over
             return true, winner 
 
+    // Checking for tie is easy — just see if the grid
+    // is full. I have already checked for wins, so, 
+    // there can only be empty spots or tie.
     Check if there is no more valid moves
         If so, game is over
             return true, 'tie'
