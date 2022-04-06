@@ -77,6 +77,11 @@ function PlayerFactory (symbol, color) {
             && (chain[0] + 2) === chain[2]
     }
 
+    function isVerticalLine(chain) {
+        return (chain[0] + 3) == chain[1]
+            && (chain[0] + 6) == chain[2];
+    }
+
     return {
         getColor,
         getSymbol,
@@ -88,4 +93,4 @@ function PlayerFactory (symbol, color) {
 }
 
 const p1 = PlayerFactory('X', 'green');
-console.log(p1.isChain([1, 2], [2, 3]));
+console.log(p1.isChain([6, 3], [3, 0]));
