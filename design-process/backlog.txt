@@ -3,7 +3,9 @@ Implementation details:
     Javascipt:
     
         • A function that checks if a possible index is out of bounds
-        • The player factory and game module
+        • The game module
+        • Add gridEdge and linSize properties into players so they
+        can better check for wincon lines
     
     CSS:
 

@@ -82,6 +82,11 @@ function PlayerFactory (symbol, color) {
             && (chain[0] + 6) == chain[2];
     }
 
+    function isBackslashLine(chain) {
+        return (chain[0] + 3 + 1 ) == chain[1]
+            && (chain[0] + (3 + 1) * 2 ) == chain[2];
+    }
+
     return {
         getColor,
         getSymbol,
@@ -93,4 +98,4 @@ function PlayerFactory (symbol, color) {
 }
 
 const p1 = PlayerFactory('X', 'green');
-console.log(p1.isChain([6, 3], [3, 0]));
+console.log(p1.isChain([0, 4], [4, 8]));
