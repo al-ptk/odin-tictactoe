@@ -4,6 +4,7 @@ Implementation details:
     
         • A function that checks if a possible index is out of bounds
         • The game module
+        • Add adjustable lineSize wincons
     
     CSS:
 

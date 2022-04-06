@@ -35,12 +35,12 @@ function PlayerFactory (symbol, color, gridEdge) {
     function isNeighbour(a, b) {
         return (a === (b - 1)) // west
             || (a === (b + 1)) // east
-            || (a === (b - 3)) // north
-            || (a === (b + 3)) // south
-            || (a === (b + 3 + 1)) // south-east
-            || (a === (b - 3 + 1)) // north-east
-            || (a === (b + 3 - 1)) // south-west
-            || (a === (b - 3 - 1)) // north-west
+            || (a === (b - gridEdge)) // north
+            || (a === (b + gridEdge)) // south
+            || (a === (b + gridEdge + 1)) // south-east
+            || (a === (b - gridEdge + 1)) // north-east
+            || (a === (b + gridEdge - 1)) // south-west
+            || (a === (b - gridEdge - 1)) // north-west
     }
 
     function hasVictory () {
@@ -113,5 +113,15 @@ function PlayerFactory (symbol, color, gridEdge) {
     };
 }
 
+function MatchFactory (gridEdge) {
+    const board = new Array(gridEdge ** 2).fill('');
+    board[4] = 'X';
+
+    return {
+        board
+    }
+};
+
+const match = MatchFactory(3);
 const p1 = PlayerFactory('X', 'green', 3);
-console.log(p1.isChain([2, 4], [4, 6]));
+console.log(match.board);

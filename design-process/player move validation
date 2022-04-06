@@ -1,6 +1,0 @@
-proc makeMove
-    Take player chosen cell
-    if cell not empty
-        return
-    Change element in array
-    Update grid
