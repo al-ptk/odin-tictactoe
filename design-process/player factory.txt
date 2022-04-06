@@ -1,0 +1,44 @@
+person (symbol, color)
+{
+getColor () => color
+getSymbol () => symbol
+score = 0
+getScore () => score;
+updateScore () => score++;
+? resetScore () => score = 0;
+spots = []
+links = []
+
+makeMove (index) => 
+{
+    add index to spots
+    for spot in spots
+        if spot is neighbour of index
+            create link of spot-index
+            add link to links
+
+    if (hasVictory())
+        return 'winner!'
+}
+
+hasVictory () 
+{
+    tempLinks = [...links]
+    while tempLinks.length != 0
+        currentLoopLink = tempLinks.pop()
+        // Each loop pops the last element
+        // Then checks all other elements against the popped one
+        // That way, no element is checked for Links twice
+
+        for tempLink of tempLinks
+            if (isChain(tempLink, currentLoopLink))
+                return isLine(tempLink, currentLoopLink)
+}
+
+isChain()
+{
+    link.includes(currentLoopLink[0]) || link.includes(currentLoopLink[1])
+    // All links are 2-element lists, so this is safe!
+}
+
+}
