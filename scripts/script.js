@@ -54,11 +54,16 @@ function PlayerFactory (symbol, color) {
     function isChain (linkA, linkB) {
         let hasFirstElement = linkA.includes(linkB[0]);
         let hasSecondElement = linkA.includes(linkB[1]);
-        
-        if (!hasFirstElement || !hasSecondElement) {
+
+        if (!(hasFirstElement || hasSecondElement)) {
             return false;
         } else {
-            return true;
+            linkA.sort(); // [4, 5]
+            linkB.sort(); // [3, 4]
+            if (linkA[0] > linkB[0]) { // 4 > 3 ?
+                [linkA, linkB] = [linkB, linkA]; // [3, 4] and [4, 5]
+            }
+            p(linkA + ' ' + linkB);
         }
     }
 
