@@ -83,8 +83,13 @@ function PlayerFactory (symbol, color) {
     }
 
     function isBackslashLine(chain) {
-        return (chain[0] + 3 + 1 ) == chain[1]
+        return (chain[0] + (3 + 1) * 1 ) == chain[1]
             && (chain[0] + (3 + 1) * 2 ) == chain[2];
+    }
+
+    function isForwardslashLine(chain) {
+        return (chain[0] + (3 - 1) * 1 ) == chain[1]
+            && (chain[0] + (3 - 1) * 2 ) == chain[2];
     }
 
     return {
@@ -98,4 +103,4 @@ function PlayerFactory (symbol, color) {
 }
 
 const p1 = PlayerFactory('X', 'green');
-console.log(p1.isChain([0, 4], [4, 8]));
+console.log(p1.isChain([2, 4], [4, 6]));
