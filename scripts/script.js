@@ -1,7 +1,7 @@
 'use strict';
 const p = (str) => console.log(str);
 
-function PlayerFactory (symbol, color) {
+function PlayerFactory (symbol, color, gridEdge) {
     let score = 0;
     const spots = [];
     const links = [];
@@ -18,7 +18,6 @@ function PlayerFactory (symbol, color) {
     function incrementScore () {
         score++;
     };
-
 
     function makeMove (index) {
         spots.push(index)
@@ -90,18 +89,18 @@ function PlayerFactory (symbol, color) {
     }
 
     function isVerticalLine(chain) {
-        return (chain[0] + 3) == chain[1]
-            && (chain[0] + 6) == chain[2];
+        return (chain[0] + gridEdge) == chain[1]
+            && (chain[0] + gridEdge) == chain[2];
     }
 
     function isBackslashLine(chain) {
-        return (chain[0] + (3 + 1) * 1 ) == chain[1]
-            && (chain[0] + (3 + 1) * 2 ) == chain[2];
+        return (chain[0] + (gridEdge + 1) * 1 ) == chain[1]
+            && (chain[0] + (gridEdge + 1) * 2 ) == chain[2];
     }
 
     function isForwardslashLine(chain) {
-        return (chain[0] + (3 - 1) * 1 ) == chain[1]
-            && (chain[0] + (3 - 1) * 2 ) == chain[2];
+        return (chain[0] + (gridEdge - 1) * 1 ) == chain[1]
+            && (chain[0] + (gridEdge - 1) * 2 ) == chain[2];
     }
 
     return {
@@ -110,9 +109,9 @@ function PlayerFactory (symbol, color) {
         getScore,
         incrementScore,
         makeMove,
-        hasVictory
+        isChain
     };
 }
 
-const p1 = PlayerFactory('X', 'green');
-console.log(p1.hasVictory());
+const p1 = PlayerFactory('X', 'green', 3);
+console.log(p1.isChain([2, 4], [4, 6]));
