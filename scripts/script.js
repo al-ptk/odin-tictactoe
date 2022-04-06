@@ -58,13 +58,23 @@ function PlayerFactory (symbol, color) {
         if (!(hasFirstElement || hasSecondElement)) {
             return false;
         } else {
+            // if linkA = [5,4] and linkB = [4, 3], then
             linkA.sort(); // [4, 5]
             linkB.sort(); // [3, 4]
             if (linkA[0] > linkB[0]) { // 4 > 3 ?
-                [linkA, linkB] = [linkB, linkA]; // [3, 4] and [4, 5]
+                [linkA, linkB] = [linkB, linkA]; // make it [3, 4] and [4, 5]
             }
-            p(linkA + ' ' + linkB);
+            const chain = [...linkA, linkB[1]]; // [3, 4, 5]
+            return isHorizontalLine(chain)
+                || isVerticalLine(chain)
+                || isBackslashLine(chain)
+                || isForwardslashLine(chain);
         }
+    }
+
+    function isHorizontalLine(chain) {
+        return (chain[0] + 1) === chain[1]
+            && (chain[0] + 2) === chain[2]
     }
 
     return {
@@ -78,4 +88,4 @@ function PlayerFactory (symbol, color) {
 }
 
 const p1 = PlayerFactory('X', 'green');
-console.log(p1.isChain( [1, 2], [2, 3] ));
+console.log(p1.isChain([1, 2], [2, 3]));
