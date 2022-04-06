@@ -33,6 +33,17 @@ function PlayerFactory (symbol, color) {
         }
     }
 
+    function isNeighbour(a, b) {
+        return (a === (b - 1)) // west
+            || (a === (b + 1)) // east
+            || (a === (b - 3)) // north
+            || (a === (b + 3)) // south
+            || (a === (b + 3 + 1)) // south-east
+            || (a === (b - 3 + 1)) // north-east
+            || (a === (b + 3 - 1)) // south-west
+            || (a === (b - 3 - 1)) // north-west
+    }
+
     function hasVictory () {
         tempLinks = [...links]
         while (tempLinks.length != 0) {
@@ -56,6 +67,7 @@ function PlayerFactory (symbol, color) {
         let hasSecondElement = linkA.includes(linkB[1]);
 
         if (!(hasFirstElement || hasSecondElement)) {
+            p('no neighbours')
             return false;
         } else {
             // if linkA = [5,4] and linkB = [4, 3], then
@@ -98,9 +110,9 @@ function PlayerFactory (symbol, color) {
         getScore,
         incrementScore,
         makeMove,
-        isChain
+        isNeighbour
     };
 }
 
 const p1 = PlayerFactory('X', 'green');
-console.log(p1.isChain([2, 4], [4, 6]));
+console.log(p1.isNeighbour(3, 4));
