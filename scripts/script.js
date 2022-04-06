@@ -45,21 +45,21 @@ function PlayerFactory (symbol, color) {
     }
 
     function hasVictory () {
-        tempLinks = [...links]
+        const tempLinks = [...links]
         while (tempLinks.length != 0) {
 
             // Each loop pops the last element
             // Then checks all other elements against the popped one
             // That way, no element is checked for Links twice
 
-            currentLoopLink = tempLinks.pop()
-            for (tempLink of tempLinks) {
+            let currentLoopLink = tempLinks.pop()
+            for (const tempLink of tempLinks) {
                 if (isChain(tempLink, currentLoopLink)) {
                     return true;
                 }
             }
-            return false;
         }
+        return false;
     }
 
     function isChain (linkA, linkB) {
@@ -110,9 +110,9 @@ function PlayerFactory (symbol, color) {
         getScore,
         incrementScore,
         makeMove,
-        isNeighbour
+        hasVictory
     };
 }
 
 const p1 = PlayerFactory('X', 'green');
-console.log(p1.isNeighbour(3, 4));
+console.log(p1.hasVictory());
