@@ -20,8 +20,12 @@ function newMatch()
 //  make more sense in code
 
 ask if play again (modal)
-? newMatch () (new screen)
+?  {
+    player1.newMatch();
+    player2.newMatch();
+    newMatch () (new screen)
+}
 : {
-    resetScore () 
+    destroy players
     render titlescreen () (new screen)
 }

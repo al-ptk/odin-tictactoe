@@ -4,8 +4,9 @@ Implementation details:
     
         • A function that checks if a possible index is out of bounds
         • The game module
-        • Add adjustable lineSize wincons
-    
+        • Make the 'check win condition' funcionality works with lines bigger than 3 units
+        • How does the player reset their spot and links 
+
     CSS:
 
         • Find decent symbols to use in the game, that are svg

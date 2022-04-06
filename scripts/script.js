@@ -3,8 +3,8 @@ const p = (str) => console.log(str);
 
 function PlayerFactory (symbol, color, gridEdge) {
     let score = 0;
-    const spots = [];
-    const links = [];
+    const spots = [1, 2, 3];
+    const links = [[1, 2], [3, 4], [7, 8]];
 
     function getColor () {
         return color;
@@ -18,6 +18,10 @@ function PlayerFactory (symbol, color, gridEdge) {
     function incrementScore () {
         score++;
     };
+    function clearCache() {
+        spots.splice(0, spots.length);
+        links.splice(0, links.length);
+    }
 
     function makeMove (index) {
         spots.push(index)
@@ -109,7 +113,7 @@ function PlayerFactory (symbol, color, gridEdge) {
         getScore,
         incrementScore,
         makeMove,
-        isChain
+        clearCache
     };
 }
 
@@ -124,4 +128,4 @@ function MatchFactory (gridEdge) {
 
 const match = MatchFactory(3);
 const p1 = PlayerFactory('X', 'green', 3);
-console.log(match.board);
+console.log(p1.clearCache());
