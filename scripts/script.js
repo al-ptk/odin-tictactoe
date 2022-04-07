@@ -155,7 +155,6 @@ function MatchFactory (gridEdge, players) {
             button.addEventListener ('click', e => {
                 board[e.target.id.slice(1)] = 'X';
                 const aiPick = players[1].getValidInput(getEmptySpaces());
-                p(aiPick);
                 board[aiPick] = 'O';
                 updateWidget();
             })
@@ -214,11 +213,11 @@ function MatchFactory (gridEdge, players) {
 //          Else
 //              title screen
 
-function gameLoop (players,) {
+function gameLoop (players,board) {
     let gameOver = false;
     while (!gameOver) {
         for (const player of players) {
-            player.getValidInput(board);
+            player.getValidInput(board.getEmptySpaces());
             gameOver = player.hasVictory();
             if (gameOver) {
                 player.incrementScore();
@@ -246,7 +245,7 @@ root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
 
-const gridSize = 5;
+const gridSize = 3;
 const players = [
     PlayerFactory('X', 'green', gridSize),
     AiFactory()

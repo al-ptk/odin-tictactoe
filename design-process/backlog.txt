@@ -2,6 +2,7 @@ Implementation details:
 
     Javascipt:
     
+        • How will I do 2 player human players thing? Maybe I can put a turn flag — only when the flag is set that the input is accepted.
         • The game module
         • Make the 'check win condition' funcionality works with lines bigger than 3 units
         • Have default player names for better identification
@@ -20,12 +21,20 @@ Implementation details:
 
         • Find decent symbols to use in the game, that are svg
         • Figure out how to change the color of embeded svg
+        • Pick good fonts
+        • Set the three color schemes:
+            • Dark and light brown, Dark and Light green, Silver;
+            • Navy blue, Yellow and silver;
+            • Graphite, yellow, pink and silver;
+            • Graphite, yellow, pink, blue
+            • Shades of gray — Lighter graphite and darker silver (instead of white)
+        • Makke the tic-tac-toe letters animate
+        • Use a 5x5 grid to add some X's and O's
+        • Which symbols should I add to the game?
 
 
     HTML-DOM:
 
-        • Add a way to automatically sync and update both widget and array 
-        board.
         • Create the pickGameMode modal (vs player, vs ai)
         • Create the pickGridSize modal (3x3, 5x5, 7x7)
         • Create Title screen with new game button
@@ -37,3 +46,4 @@ Features that could be cool:
     • Each person can customize their symbol and color
     • The game has different color schemes
     • Maybe putting a three people mode?
+    • Add cards\special resources to spice the gameplay up?
