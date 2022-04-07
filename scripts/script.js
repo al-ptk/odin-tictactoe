@@ -3,8 +3,8 @@ const p = (str) => console.log(str);
 
 function PlayerFactory (symbol, color, gridEdge) {
     let score = 0;
-    const spots = [1, 2, 3];
-    const links = [[1, 2], [3, 4], [7, 8]];
+    const spots = [];
+    const links = [];
 
     function getColor () {
         return color;
@@ -18,22 +18,34 @@ function PlayerFactory (symbol, color, gridEdge) {
     function incrementScore () {
         score++;
     };
-    function clearCache() {
+    function clearCache () {
         spots.splice(0, spots.length);
         links.splice(0, links.length);
+    };
+    function getCache () {
+        return {spots, links};
     }
 
     function makeMove (index) {
-        spots.push(index)
-        for (const spot in spots) {
-            if (isNeighbour(spot, index)) {
+        for (const spot of spots) {
+            if (isNeighbour(spot, index) && !onOppositeEdges(spot, index)) {
+                p([index, spot]);
                 links.push([index, spot])
             }
         }
+        spots.push(index);
 
         if (hasVictory()) {
-            return 'winner!'
+            console.log('winner!');
         }
+    }
+
+    function onOppositeEdges (a, b) {
+        const aLeftEdge = (a % gridEdge === 0);
+        const aRightEdge = (a % gridEdge === gridEdge - 1);
+        const bLeftEdge = (b % gridEdge === 0);
+        const bRightEdge = (b % gridEdge === gridEdge - 1);
+        return aLeftEdge && bRightEdge || aRightEdge && bLeftEdge;
     }
 
     function isNeighbour(a, b) {
@@ -66,20 +78,27 @@ function PlayerFactory (symbol, color, gridEdge) {
     }
 
     function isChain (linkA, linkB) {
-        let hasFirstElement = linkA.includes(linkB[0]);
-        let hasSecondElement = linkA.includes(linkB[1]);
+        let elementInCommon = linkA.includes(linkB[0]) || linkA.includes(linkB[1]);
 
-        if (!(hasFirstElement || hasSecondElement)) {
+        if (!elementInCommon) {
             p('no neighbours')
             return false;
+
         } else {
-            // if linkA = [5,4] and linkB = [4, 3], then
-            linkA.sort(); // [4, 5]
-            linkB.sort(); // [3, 4]
-            if (linkA[0] > linkB[0]) { // 4 > 3 ?
-                [linkA, linkB] = [linkB, linkA]; // make it [3, 4] and [4, 5]
+
+            linkA.sort();
+            linkB.sort();
+            if (linkA[0] > linkB[0]) {
+                [linkA, linkB] = [linkB, linkA];
             }
-            const chain = [...linkA, linkB[1]]; // [3, 4, 5]
+            
+            const chain = [
+                linkA[0],
+                linkA[1] > linkB[0] ? linkA[0] : linkB[0],
+                linkB[1]
+            ];
+            // p(linkA + ' ' + linkB);
+            // p(chain);
             return isHorizontalLine(chain)
                 || isVerticalLine(chain)
                 || isBackslashLine(chain)
@@ -94,7 +113,7 @@ function PlayerFactory (symbol, color, gridEdge) {
 
     function isVerticalLine(chain) {
         return (chain[0] + gridEdge) == chain[1]
-            && (chain[0] + gridEdge) == chain[2];
+            && (chain[0] + gridEdge *2 ) == chain[2];
     }
 
     function isBackslashLine(chain) {
@@ -113,7 +132,8 @@ function PlayerFactory (symbol, color, gridEdge) {
         getScore,
         incrementScore,
         makeMove,
-        clearCache
+        clearCache,
+        getCache
     };
 }
 
@@ -128,4 +148,6 @@ function MatchFactory (gridEdge) {
 
 const match = MatchFactory(3);
 const p1 = PlayerFactory('X', 'green', 3);
-console.log(p1.clearCache());
+p1.makeMove(0);
+p1.makeMove(6);
+p1.makeMove(3);

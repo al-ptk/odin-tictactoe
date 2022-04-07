@@ -2,10 +2,8 @@ Implementation details:
 
     Javascipt:
     
-        • A function that checks if a possible index is out of bounds
         • The game module
         • Make the 'check win condition' funcionality works with lines bigger than 3 units
-        • How does the player reset their spot and links 
 
     CSS:
 
