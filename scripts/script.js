@@ -153,8 +153,11 @@ function MatchFactory (gridEdge, players) {
             button.id = `b${i}`;
             button.classList.add('board-cell');
             button.addEventListener ('click', e => {
-                board[e.target.id.charAt(1)] = 'X';
-                e.target.textContent = 'X';
+                board[e.target.id.slice(1)] = 'X';
+                const aiPick = players[1].getValidInput(getEmptySpaces());
+                p(aiPick);
+                board[aiPick] = 'O';
+                updateWidget();
             })
             container.appendChild(button);
         }
@@ -164,6 +167,13 @@ function MatchFactory (gridEdge, players) {
     function getWidgetReference () {
         return boardWidget;
     };
+
+    function updateWidget () {
+        for (let i = 0; i < gridEdge ** 2; i++){
+            const btn = document.querySelector(`#b${i}`);
+            btn.textContent = board[i];
+        }
+    }
 
     function getEmptySpaces () {
         const emptySpaces = [];
@@ -177,7 +187,14 @@ function MatchFactory (gridEdge, players) {
         return board;
     }
 
+    function clearBoard () {
+        for (let i = 0; i < board.length; i++) {
+            board[i] = '';
+        }
+    }
+
     return {
+        clearBoard,
         getWidgetReference,
         getFullBoard,
         getEmptySpaces
@@ -205,21 +222,21 @@ function gameLoop (players,) {
             gameOver = player.hasVictory();
             if (gameOver) {
                 player.incrementScore();
-                board.clear();
+                board.clearBoard();
             }
         }
     }
 }
 
 function AiFactory () {
-    function chooseSpot (emptySpaces) {
+    function getValidInput (emptySpaces) {
         const randomIndex = Math.trunc(Math.random() * emptySpaces.length);
         const spot = emptySpaces[randomIndex];
         return spot;
     }
 
     return {
-        chooseSpot
+        getValidInput
     }
 }
 
@@ -232,9 +249,6 @@ body.appendChild(root);
 const gridSize = 5;
 const players = [
     PlayerFactory('X', 'green', gridSize),
-    PlayerFactory('Y', 'red', gridSize)
+    AiFactory()
 ]
 const match = MatchFactory(gridSize, players);
-
-const ai = AiFactory();
-p(ai.chooseSpot(['', 'X', 'X', 'X']))

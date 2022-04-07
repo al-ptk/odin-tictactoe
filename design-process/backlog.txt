@@ -24,6 +24,8 @@ Implementation details:
 
     HTML-DOM:
 
+        • Add a way to automatically sync and update both widget and array 
+        board.
         • Create the pickGameMode modal (vs player, vs ai)
         • Create the pickGridSize modal (3x3, 5x5, 7x7)
         • Create Title screen with new game button
