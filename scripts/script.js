@@ -18,18 +18,17 @@ function PlayerFactory (symbol, color, gridEdge) {
     function incrementScore () {
         score++;
     };
-    function clearCache () {
+    function clearCachedMoves () {
         spots.splice(0, spots.length);
         links.splice(0, links.length);
     };
-    function getCache () {
+    function getCachedMoves () {
         return {spots, links};
     }
 
-    function makeMove (index) {
+    function registerMove (index) {
         for (const spot of spots) {
-            if (isNeighbour(spot, index) && !onOppositeEdges(spot, index)) {
-                p([index, spot]);
+            if (!onOppositeEdges(spot, index) && isNeighbour(spot, index)) {
                 links.push([index, spot])
             }
         }
@@ -131,23 +130,46 @@ function PlayerFactory (symbol, color, gridEdge) {
         getSymbol,
         getScore,
         incrementScore,
-        makeMove,
-        clearCache,
-        getCache
+        registerMove,
+        clearCachedMoves,
+        getCachedMoves
     };
 }
 
-function MatchFactory (gridEdge) {
+function MatchFactory (gridEdge, players) {
     const board = new Array(gridEdge ** 2).fill('');
-    board[4] = 'X';
+
+    const boardWidget = (function (gridEdge) {
+        HTMLroot.style.setProperty('--gridEdge', gridEdge);
+        const container = document.createElement('div');
+        container.classList.add('board-container')
+        for (let i = 0; i < gridEdge ** 2; i ++) {
+            const button = document.createElement('button');
+            button.id = `b${i}`;
+            button.classList.add('board-cell');
+            button.addEventListener ('click', e => {
+                board[e.target.id.charAt(1)] = 'X';
+                e.target.textContent = 'X';
+                console.log(board);
+            })
+            container.appendChild(button);
+        }
+        return root.appendChild(container);
+    }(gridEdge));
 
     return {
-        board
     }
 };
 
-const match = MatchFactory(3);
-const p1 = PlayerFactory('X', 'green', 3);
-p1.makeMove(0);
-p1.makeMove(6);
-p1.makeMove(3);
+const HTMLroot = document.querySelector(':root');
+const root = document.createElement('div');
+root.id = 'appRoot';
+const body = document.querySelector('body');
+body.appendChild(root);
+
+const gridSize = 5;
+const players = [
+    PlayerFactory('X', 'green', gridSize),
+    PlayerFactory('Y', 'red', gridSize)
+]
+const match = MatchFactory(gridSize, players);
