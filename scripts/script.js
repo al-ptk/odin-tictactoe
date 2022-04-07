@@ -125,6 +125,10 @@ function PlayerFactory (symbol, color, gridEdge) {
             && (chain[0] + (gridEdge - 1) * 2 ) == chain[2];
     }
 
+    function getValidInput (board) {
+
+    }
+
     return {
         getColor,
         getSymbol,
@@ -132,7 +136,8 @@ function PlayerFactory (symbol, color, gridEdge) {
         incrementScore,
         registerMove,
         clearCachedMoves,
-        getCachedMoves
+        getCachedMoves,
+        getValidInput
     };
 }
 
@@ -150,22 +155,64 @@ function MatchFactory (gridEdge, players) {
             button.addEventListener ('click', e => {
                 board[e.target.id.charAt(1)] = 'X';
                 e.target.textContent = 'X';
-                console.log(board);
             })
             container.appendChild(button);
         }
         return root.appendChild(container);
     }(gridEdge));
 
-    return {};
-};
+    function getWidgetReference () {
+        return boardWidget;
+    };
 
-function AiFactory () {
-    function chooseSpot (board) {
+    function getEmptySpaces () {
         const emptySpaces = [];
         for (let i = 0; i < board.length; i++) {
             if (board[i] === '') emptySpaces.push(i)
         }
+        return emptySpaces
+    }
+
+    function getFullBoard () {
+        return board;
+    }
+
+    return {
+        getWidgetReference,
+        getFullBoard,
+        getEmptySpaces
+    };
+};
+
+//  New game?
+//      Number of human players
+//      Get symbol, color and name for each human player
+//      Grid size
+//      Generate grid
+//      Start gameLoop
+//      If gameOver
+//          If Rematch
+//              updateScore
+//              clear board
+//          Else
+//              title screen
+
+function gameLoop (players,) {
+    let gameOver = false;
+    while (!gameOver) {
+        for (const player of players) {
+            player.getValidInput(board);
+            gameOver = player.hasVictory();
+            if (gameOver) {
+                player.incrementScore();
+                board.clear();
+            }
+        }
+    }
+}
+
+function AiFactory () {
+    function chooseSpot (emptySpaces) {
         const randomIndex = Math.trunc(Math.random() * emptySpaces.length);
         const spot = emptySpaces[randomIndex];
         return spot;
