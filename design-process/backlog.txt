@@ -5,16 +5,22 @@ Implementation details:
         • The game module
         • Make the 'check win condition' funcionality works with lines bigger than 3 units
         • Have default player names for better identification
+        • Think about how the turns are applied:
+            • Make computer pick a random spot from all empty spots
+            • Test hasVicotry functionality coupled with boardWidget
+
+
+    Javascipt — Pure-Function Branch:
+
         • Maybe decopuple all functions from player object, leaving it only with data (name, score, symbol, color)
         • make hasVictory its own function, with all extra functions internal to it
-        • Think about how the turns are applied
-        • Make computer pick a random spot from all empty spots
-        • Test hasVicotry functionality coupled with boardWidget
+
 
     CSS:
 
         • Find decent symbols to use in the game, that are svg
         • Figure out how to change the color of embeded svg
+
 
     HTML-DOM:
 

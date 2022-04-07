@@ -24,7 +24,7 @@ function PlayerFactory (symbol, color, gridEdge) {
     };
     function getCachedMoves () {
         return {spots, links};
-    }
+    };
 
     function registerMove (index) {
         for (const spot of spots) {
@@ -157,9 +157,24 @@ function MatchFactory (gridEdge, players) {
         return root.appendChild(container);
     }(gridEdge));
 
-    return {
-    }
+    return {};
 };
+
+function AiFactory () {
+    function chooseSpot (board) {
+        const emptySpaces = [];
+        for (let i = 0; i < board.length; i++) {
+            if (board[i] === '') emptySpaces.push(i)
+        }
+        const randomIndex = Math.trunc(Math.random() * emptySpaces.length);
+        const spot = emptySpaces[randomIndex];
+        return spot;
+    }
+
+    return {
+        chooseSpot
+    }
+}
 
 const HTMLroot = document.querySelector(':root');
 const root = document.createElement('div');
@@ -173,3 +188,6 @@ const players = [
     PlayerFactory('Y', 'red', gridSize)
 ]
 const match = MatchFactory(gridSize, players);
+
+const ai = AiFactory();
+p(ai.chooseSpot(['', 'X', 'X', 'X']))
