@@ -2,19 +2,24 @@ Implementation details:
 
     Javascipt:
     
-        • How will I do 2 player human players thing? Maybe I can put a turn flag — only when the flag is set that the input is accepted.
         • The game module
         • Make the 'check win condition' funcionality works with lines bigger than 3 units
-        • Have default player names for better identification
-        • Think about how the turns are applied:
-            • Make computer pick a random spot from all empty spots
-            • Test hasVicotry functionality coupled with boardWidget
+        • Think about how the turns are applied
 
 
-    Javascipt — Pure-Function Branch:
+    Javascipt — Pure-Functions Branch:
 
-        • Maybe decopuple all functions from player object, leaving it only with data (name, score, symbol, color)
+        • Maybe decopuple all functions from player object, leaving it only with data (name, score, symbol, color, etc)
         • make hasVictory its own function, with all extra functions internal to it
+
+
+    HTML-DOM:
+
+        • Create the pickGameMode modal (vs player, vs ai)
+        • Create the pickGridSize modal (3x3, 5x5, 7x7)
+        • Create Title screen with new game button
+        • Create Grid screen with the current match
+        • The flow of the app will be seen by openinig-closing modals, as well as changing screens (detach one, attach another).
 
 
     CSS:
@@ -27,19 +32,11 @@ Implementation details:
             • Navy blue, Yellow and silver;
             • Graphite, yellow, pink and silver;
             • Graphite, yellow, pink, blue
-            • Shades of gray — Lighter graphite and darker silver (instead of white)
+            • Shades of gray — Lighter graphite and darker silver (instead of white) with shados in letters
         • Makke the tic-tac-toe letters animate
         • Use a 5x5 grid to add some X's and O's
         • Which symbols should I add to the game?
 
-
-    HTML-DOM:
-
-        • Create the pickGameMode modal (vs player, vs ai)
-        • Create the pickGridSize modal (3x3, 5x5, 7x7)
-        • Create Title screen with new game button
-        • Create Grid screen with the current match
-        • The flow of the app will be seen by openinig-closing modals, as well as changing screens (detach one, attach another).
 
 Features that could be cool:
 

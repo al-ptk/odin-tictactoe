@@ -33,7 +33,9 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         index = parseInt(index);
         for (const spot of spots) {
             if (isValidLink(index, spot)) {
-                links.push([index, spot])
+                links.push(
+                    [index, spot].sort((a,b) => a - b)
+                    );
             }
         }
         spots.push(index);
@@ -95,7 +97,6 @@ function PlayerFactory (name, symbol, color, gridEdge) {
 
     function isChain (linkA, linkB) {
         let elementInCommon = linkA.includes(linkB[0]) || linkA.includes(linkB[1]);
-
         if (!elementInCommon) {
             return false;
         } else {
@@ -108,8 +109,6 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     };
 
     function extractChain(linkA, linkB) {
-        linkA.sort();
-        linkB.sort();
         if (linkA[0] > linkB[0]) {
             [linkA, linkB] = [linkB, linkA];
         };
@@ -175,7 +174,6 @@ function MatchFactory (gridEdge, players) {
 
     function playerTurn (e) {
         if (e.target.textContent !== '') return;
-        p(players[currentTurn].getName());
         const index = e.target.id.slice(1);
         board[index] = players[currentTurn].getSymbol();
         const victory = players[currentTurn].registerMove(index)
@@ -252,7 +250,7 @@ root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
 
-const gridSize = 3;
+const gridSize = 5;
 const players = [
     PlayerFactory('Player1', 'K', 'green', gridSize),
     // AiFactory(gridSize)
