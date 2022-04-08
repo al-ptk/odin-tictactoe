@@ -128,10 +128,6 @@ function PlayerFactory (symbol, color, gridEdge) {
             && (chain[0] + (gridEdge - 1) * 2 ) == chain[2];
     }
 
-    function getValidInput (board) {
-
-    }
-
     return {
         getColor,
         getSymbol,
@@ -140,7 +136,6 @@ function PlayerFactory (symbol, color, gridEdge) {
         registerMove,
         clearCachedMoves,
         getCachedMoves,
-        getValidInput,
         isNeighbour
     };
 }
@@ -160,8 +155,10 @@ function MatchFactory (gridEdge, players) {
                 const index = e.target.id.slice(1);
                 board[index] = players[0].getSymbol();
                 players[0].registerMove(index)
+                updateWidget();
                 const aiPick = players[1].getValidInput(getEmptySpaces());
-                board[aiPick] = 'O';
+                board[aiPick] = players[1].getSymbol();
+                players[1].registerMove(aiPick);
                 updateWidget();
             })
             container.appendChild(button);
@@ -233,16 +230,18 @@ function gameLoop (players,board) {
     }
 }
 
-function AiFactory () {
+function AiFactory (gridEdge) {
     function getValidInput (emptySpaces) {
         const randomIndex = Math.trunc(Math.random() * emptySpaces.length);
         const spot = emptySpaces[randomIndex];
         return spot;
     }
 
-    return {
-        getValidInput
-    }
+    return Object.assign(
+        PlayerFactory('C', 'blue', gridEdge),
+        {
+            getValidInput
+        });
 }
 
 const HTMLroot = document.querySelector(':root');
@@ -255,5 +254,5 @@ const gridSize = 3;
 const players = [
     PlayerFactory('K', 'green', gridSize),
     AiFactory()
-]
+];
 const match = MatchFactory(gridSize, players);
