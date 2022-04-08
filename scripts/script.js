@@ -1,11 +1,14 @@
 'use strict';
 const p = (str) => console.log(str);
 
-function PlayerFactory (symbol, color, gridEdge) {
+function PlayerFactory (name, symbol, color, gridEdge) {
     let score = 0;
     const spots = [];
     const links = [];
 
+    function getName (){
+        return name;
+    };
     function getColor () {
         return color;
     };
@@ -29,24 +32,37 @@ function PlayerFactory (symbol, color, gridEdge) {
     function registerMove (index) {
         index = parseInt(index);
         for (const spot of spots) {
-            if (!onOppositeEdges(index, spot) 
-                && isNeighbour(index, spot)
-                && !links.includes([index,spot])) {
+            p(getCachedMoves());
+            if (isValidLink(index, spot)) {
                 links.push([index, spot])
             }
         }
         spots.push(index);
         if (hasVictory()) {
-            console.log('winner!');
+            console.log(`${name} wins!`);
         }
     }
 
+    function isValidLink(index, spot) {
+        p(`spot ${spot} and ${index}`);
+        p(`Not on opposite edges ${onOppositeEdges(index, spot)}`);
+        p(`Is neighbour ${isNeighbour(index, spot)}`);
+        p(`Link not included ${!links.includes([index,spot])}`)
+        p('')
+        return onOppositeEdges(index, spot) 
+            && isNeighbour(index, spot)
+            && !links.includes([index,spot]);
+    }
+
     function onOppositeEdges (a, b) {
+        a > b ? [a, b] = [b, a] : '';
         const aLeftEdge = (a % gridEdge === 0);
         const aRightEdge = (a % gridEdge === gridEdge - 1);
         const bLeftEdge = (b % gridEdge === 0);
         const bRightEdge = (b % gridEdge === gridEdge - 1);
-        return (aLeftEdge && bRightEdge || aRightEdge && bLeftEdge);
+        const result = !(aLeftEdge && bRightEdge || aRightEdge && bLeftEdge);
+        // p(`${a} and ${b} NOT on opposite sides ${!result}`);
+        return result;
     }
 
     function isNeighbour(a, b) {
@@ -72,6 +88,7 @@ function PlayerFactory (symbol, color, gridEdge) {
             let currentLoopLink = tempLinks.pop()
             for (const tempLink of tempLinks) {
                 if (isChain(tempLink, currentLoopLink)) {
+                    p(`Winning Chain ${tempLink} + ${currentLoopLink}`)
                     return true;
                 }
             }
@@ -136,7 +153,8 @@ function PlayerFactory (symbol, color, gridEdge) {
         registerMove,
         clearCachedMoves,
         getCachedMoves,
-        isNeighbour
+        isNeighbour,
+        onOppositeEdges
     };
 }
 
@@ -238,7 +256,7 @@ function AiFactory (gridEdge) {
     }
 
     return Object.assign(
-        PlayerFactory('C', 'blue', gridEdge),
+        PlayerFactory('Computer', 'C', 'blue', gridEdge),
         {
             getValidInput
         });
@@ -252,7 +270,12 @@ body.appendChild(root);
 
 const gridSize = 3;
 const players = [
-    PlayerFactory('K', 'green', gridSize),
-    AiFactory()
+    PlayerFactory('Player', 'K', 'green', gridSize),
+    AiFactory(gridSize)
 ];
 const match = MatchFactory(gridSize, players);
+
+players[1].registerMove(2);
+players[1].registerMove(5);
+players[1].registerMove(8);
+p(players[1].getCachedMoves());
