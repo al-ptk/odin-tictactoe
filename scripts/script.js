@@ -250,16 +250,94 @@ function AiFactory (gridEdge) {
         });
 };
 
+function titleScreen () {
+    const container = document.createElement('div');
+    container.classList.add('titlScreen');
+    const newGame = document.createElement('button');
+    newGame.textContent = 'Let\'s Play!';
+    newGame.addEventListener('click', e => {
+        const obj = {}
+        const data = pickPlayerNumberModal(pickGridSize, obj);
+        const players = [
+            PlayerFactory('Player1', 'X', 'green', 3),
+            // AiFactory(3)
+            PlayerFactory('Player2', 'O', 'red', 3)
+        ];
+        const currentMatch = MatchFactory(3, players);
+        root.removeChild(container);
+    });
+    container.appendChild(newGame);
+    root.appendChild(container)
+}
+
+function pickPlayerNumberModal (callback, data) {
+    const container = document.createElement('div');
+    root.appendChild(container);
+    container.classList.add('pickPlayerModal');
+    const onePlayer = document.createElement('button');
+    onePlayer.textContent = '1 Player';
+    onePlayer.addEventListener('click', e => {
+        root.removeChild(container);
+        data.players = 1;
+        callback(data);
+    })
+    container.appendChild(onePlayer);
+    const twoPlayers = document.createElement('button');
+    twoPlayers.textContent = '2 Players';
+    twoPlayers.addEventListener('click', e => {
+        root.removeChild(container);
+        data.players = 2;
+        callback(data);
+    })
+    container.appendChild(twoPlayers)
+}
+
+function pickGridSize (data) {
+    const container = document.createElement('div');
+    container.classList.add('pickGridSizeModal');
+    const btn3 = document.createElement('button');
+    btn3.textContent = '3x3';
+    btn3.addEventListener('click', e => {
+        root.removeChild(container);
+        data.gridSize = 3;
+    });
+    container.appendChild(btn3);
+
+    const btn5 = document.createElement('button');
+    btn5.textContent = '5x5';
+    btn5.addEventListener('click', e => {
+        root.removeChild(container);
+        data.gridSize = 3;
+    });
+    container.appendChild(btn5);
+
+    const btn7 = document.createElement('button');
+    btn7.textContent = '7x7';
+    btn7.addEventListener('click', e => {
+        root.removeChild(container);
+        data.gridSize = 3;
+
+    });
+    container.appendChild(btn7);
+
+    root.appendChild(container);
+}
+
+// function configureNewGame () {
+//     const obj = {}
+//     const data = pickPlayerNumberModal(pickGridSize, obj);
+//     const players = [
+//         PlayerFactory('Player1', 'X', 'green', 3),
+//         // AiFactory(3)
+//         PlayerFactory('Player2', 'O', 'red', 3)
+//     ];
+//     const currentMatch = MatchFactory(3, players);
+// }
+
+
 const HTMLroot = document.querySelector(':root');
 const root = document.createElement('div');
 root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
-
-const gridSize = 3;
-const players = [
-    PlayerFactory('Player1', 'X', 'green', gridSize),
-    // AiFactory(gridSize)
-    PlayerFactory('Player2', 'O', 'red', gridSize)
-];
-const match = MatchFactory(gridSize, players);
+titleScreen();

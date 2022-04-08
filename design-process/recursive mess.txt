@@ -1,0 +1,10 @@
+modalBtn3.cLick(e => {return some value + 
+    modalBtn2.click( e => { return some value + 
+        modalBtn1.click(e => {return some value})
+    })
+})
+
+
+return a = {some value, nextmoda()}
+return b = {a, next modal()}
+return c = {b, some value};
