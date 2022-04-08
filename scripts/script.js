@@ -37,9 +37,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
             }
         }
         spots.push(index);
-        if (hasVictory()) {
-            console.log(`${name} wins!`);
-        }
+        return hasVictory();
     }
 
     function isValidLink(index, spot) {
@@ -180,8 +178,11 @@ function MatchFactory (gridEdge, players) {
         p(players[currentTurn].getName());
         const index = e.target.id.slice(1);
         board[index] = players[currentTurn].getSymbol();
-        players[currentTurn].registerMove(index)
+        const victory = players[currentTurn].registerMove(index)
         updateWidget();
+        if (victory) {
+            p(`${players[currentTurn].getName()} won`);
+        }
         cycleTurn();
     }
 
