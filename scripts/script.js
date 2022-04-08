@@ -27,13 +27,15 @@ function PlayerFactory (symbol, color, gridEdge) {
     };
 
     function registerMove (index) {
+        index = parseInt(index);
         for (const spot of spots) {
-            if (!onOppositeEdges(spot, index) && isNeighbour(spot, index)) {
+            if (!onOppositeEdges(index, spot) 
+                && isNeighbour(index, spot)
+                && !links.includes([index,spot])) {
                 links.push([index, spot])
             }
         }
         spots.push(index);
-
         if (hasVictory()) {
             console.log('winner!');
         }
@@ -44,10 +46,11 @@ function PlayerFactory (symbol, color, gridEdge) {
         const aRightEdge = (a % gridEdge === gridEdge - 1);
         const bLeftEdge = (b % gridEdge === 0);
         const bRightEdge = (b % gridEdge === gridEdge - 1);
-        return aLeftEdge && bRightEdge || aRightEdge && bLeftEdge;
+        return (aLeftEdge && bRightEdge || aRightEdge && bLeftEdge);
     }
 
     function isNeighbour(a, b) {
+        a > b ? [a, b] = [b, a] : '';
         return (a === (b - 1)) // west
             || (a === (b + 1)) // east
             || (a === (b - gridEdge)) // north
@@ -137,7 +140,8 @@ function PlayerFactory (symbol, color, gridEdge) {
         registerMove,
         clearCachedMoves,
         getCachedMoves,
-        getValidInput
+        getValidInput,
+        isNeighbour
     };
 }
 
@@ -153,7 +157,9 @@ function MatchFactory (gridEdge, players) {
             button.id = `b${i}`;
             button.classList.add('board-cell');
             button.addEventListener ('click', e => {
-                board[e.target.id.slice(1)] = 'X';
+                const index = e.target.id.slice(1);
+                board[index] = players[0].getSymbol();
+                players[0].registerMove(index)
                 const aiPick = players[1].getValidInput(getEmptySpaces());
                 board[aiPick] = 'O';
                 updateWidget();
@@ -247,7 +253,7 @@ body.appendChild(root);
 
 const gridSize = 3;
 const players = [
-    PlayerFactory('X', 'green', gridSize),
+    PlayerFactory('K', 'green', gridSize),
     AiFactory()
 ]
 const match = MatchFactory(gridSize, players);
