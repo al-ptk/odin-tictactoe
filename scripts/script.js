@@ -32,7 +32,6 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     function registerMove (index) {
         index = parseInt(index);
         for (const spot of spots) {
-            p(getCachedMoves());
             if (isValidLink(index, spot)) {
                 links.push([index, spot])
             }
@@ -44,11 +43,11 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     }
 
     function isValidLink(index, spot) {
-        p(`spot ${spot} and ${index}`);
-        p(`Not on opposite edges ${onOppositeEdges(index, spot)}`);
-        p(`Is neighbour ${isNeighbour(index, spot)}`);
-        p(`Link not included ${!links.includes([index,spot])}`)
-        p('')
+        // p(`spot ${spot} and ${index}`);
+        // p(`Not on opposite edges ${onOppositeEdges(index, spot)}`);
+        // p(`Is neighbour ${isNeighbour(index, spot)}`);
+        // p(`Link not included ${!links.includes([index,spot])}`)
+        // p('')
         return onOppositeEdges(index, spot) 
             && isNeighbour(index, spot)
             && !links.includes([index,spot]);
@@ -83,7 +82,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
 
             // Each loop pops the last element
             // Then checks all other elements against the popped one
-            // That way, no element is checked for Links twice
+            // That way, no element is checked for more than required
 
             let currentLoopLink = tempLinks.pop()
             for (const tempLink of tempLinks) {
@@ -100,29 +99,28 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         let elementInCommon = linkA.includes(linkB[0]) || linkA.includes(linkB[1]);
 
         if (!elementInCommon) {
-            p('no neighbours')
             return false;
-
         } else {
-
-            linkA.sort();
-            linkB.sort();
-            if (linkA[0] > linkB[0]) {
-                [linkA, linkB] = [linkB, linkA];
-            }
-            
-            const chain = [
-                linkA[0],
-                linkA[1] > linkB[0] ? linkA[0] : linkB[0],
-                linkB[1]
-            ];
-            // p(linkA + ' ' + linkB);
-            // p(chain);
+            const chain = extractChain(linkA, linkB);
             return isHorizontalLine(chain)
                 || isVerticalLine(chain)
                 || isBackslashLine(chain)
                 || isForwardslashLine(chain);
         }
+    }
+
+    function extractChain(linkA, linkB) {
+        linkA.sort();
+        linkB.sort();
+        if (linkA[0] > linkB[0]) {
+            [linkA, linkB] = [linkB, linkA];
+        }
+        const chain = [
+            linkA[0],
+            linkA[1] > linkB[0] ? linkA[0] : linkB[0],
+            linkB[1]
+        ];
+        return chain;
     }
 
     function isHorizontalLine(chain) {
@@ -149,6 +147,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         getColor,
         getSymbol,
         getScore,
+        getName,
         incrementScore,
         registerMove,
         clearCachedMoves,
@@ -160,6 +159,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
 
 function MatchFactory (gridEdge, players) {
     const board = new Array(gridEdge ** 2).fill('');
+    let currentTurn = 0;
 
     const boardWidget = (function (gridEdge) {
         HTMLroot.style.setProperty('--gridEdge', gridEdge);
@@ -174,10 +174,12 @@ function MatchFactory (gridEdge, players) {
                 board[index] = players[0].getSymbol();
                 players[0].registerMove(index)
                 updateWidget();
+                cycleTurn();
                 const aiPick = players[1].getValidInput(getEmptySpaces());
                 board[aiPick] = players[1].getSymbol();
                 players[1].registerMove(aiPick);
                 updateWidget();
+                cycleTurn()
             })
             container.appendChild(button);
         }
@@ -213,40 +215,22 @@ function MatchFactory (gridEdge, players) {
         }
     }
 
+    function cycleTurn () {
+        currentTurn++;
+        if (currentTurn >= players.length) {
+            currentTurn = 0;
+        }
+    }
+
     return {
         clearBoard,
         getWidgetReference,
         getFullBoard,
-        getEmptySpaces
+        getEmptySpaces,
+        cycleTurn
     };
 };
 
-//  New game?
-//      Number of human players
-//      Get symbol, color and name for each human player
-//      Grid size
-//      Generate grid
-//      Start gameLoop
-//      If gameOver
-//          If Rematch
-//              updateScore
-//              clear board
-//          Else
-//              title screen
-
-function gameLoop (players,board) {
-    let gameOver = false;
-    while (!gameOver) {
-        for (const player of players) {
-            player.getValidInput(board.getEmptySpaces());
-            gameOver = player.hasVictory();
-            if (gameOver) {
-                player.incrementScore();
-                board.clearBoard();
-            }
-        }
-    }
-}
 
 function AiFactory (gridEdge) {
     function getValidInput (emptySpaces) {
@@ -268,14 +252,9 @@ root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
 
-const gridSize = 3;
+const gridSize = 5;
 const players = [
     PlayerFactory('Player', 'K', 'green', gridSize),
     AiFactory(gridSize)
 ];
 const match = MatchFactory(gridSize, players);
-
-players[1].registerMove(2);
-players[1].registerMove(5);
-players[1].registerMove(8);
-p(players[1].getCachedMoves());

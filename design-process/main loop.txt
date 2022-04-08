@@ -29,3 +29,31 @@ ask if play again (modal)
     destroy players
     render titlescreen () (new screen)
 }
+
+
+//  New game?
+//      Number of human players
+//      Get symbol, color and name for each human player
+//      Grid size
+//      Generate grid
+//      Start gameLoop
+//      If gameOver
+//          If Rematch
+//              updateScore
+//              clear board
+//          Else
+//              title screen
+
+// function gameLoop (players,board) {
+//     let gameOver = false;
+//     while (!gameOver) {
+//         for (const player of players) {
+//             player.getValidInput(board.getEmptySpaces());
+//             gameOver = player.hasVictory();
+//             if (gameOver) {
+//                 player.incrementScore();
+//                 board.clearBoard();
+//             }
+//         }
+//     }
+// }
