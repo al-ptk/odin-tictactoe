@@ -179,9 +179,15 @@ function MatchFactory (gridEdge, players) {
         const victory = players[currentTurn].registerMove(index)
         updateWidget();
         if (victory) {
-            p(`${players[currentTurn].getName()} won`);
+            const gameOverModal = document.createElement('p');
+            root.appendChild(gameOverModal);
+            gameOverModal.classList.add('gameOverModal');
+            gameOverModal.textContent = `${players[currentTurn].getName()} won!`
+            currentTurn = -1;
+            return;
+        } else {
+            cycleTurn();
         }
-        cycleTurn();
     };
 
     function getWidgetReference () {
@@ -250,10 +256,10 @@ root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
 
-const gridSize = 5;
+const gridSize = 3;
 const players = [
-    PlayerFactory('Player1', 'K', 'green', gridSize),
+    PlayerFactory('Player1', 'X', 'green', gridSize),
     // AiFactory(gridSize)
-    PlayerFactory('Player2', 'J', 'red', gridSize)
+    PlayerFactory('Player2', 'O', 'red', gridSize)
 ];
 const match = MatchFactory(gridSize, players);

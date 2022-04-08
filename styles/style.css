@@ -12,11 +12,27 @@
     background-color: rgb(58, 165, 214);
 }
 
-.board-container {
+.board-container{
+    position: fixed;
+    top: 60vw;
+    left: 15vw;
     width: 70vw;
     height: 70vw;
-    margin: 60% auto;
+    z-index: 0;
     background-color: seagreen;
     display: grid;
     grid-template-columns: repeat(var(--gridEdge), 1fr);
+}
+
+.gameOverModal {
+    position: fixed;
+    top: 70vw;
+    left: 25vw;
+    width: 50vw;
+    height: 50vw;
+    background-color: sandybrown;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
