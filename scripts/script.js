@@ -169,22 +169,21 @@ function MatchFactory (gridEdge, players) {
             const button = document.createElement('button');
             button.id = `b${i}`;
             button.classList.add('board-cell');
-            button.addEventListener ('click', e => {
-                const index = e.target.id.slice(1);
-                board[index] = players[0].getSymbol();
-                players[0].registerMove(index)
-                updateWidget();
-                cycleTurn();
-                const aiPick = players[1].getValidInput(getEmptySpaces());
-                board[aiPick] = players[1].getSymbol();
-                players[1].registerMove(aiPick);
-                updateWidget();
-                cycleTurn()
-            })
+            button.addEventListener ('click', playerTurn)
             container.appendChild(button);
         }
         return root.appendChild(container);
     }(gridEdge));
+
+    function playerTurn (e) {
+        if (e.target.textContent !== '') return;
+        p(players[currentTurn].getName());
+        const index = e.target.id.slice(1);
+        board[index] = players[currentTurn].getSymbol();
+        players[currentTurn].registerMove(index)
+        updateWidget();
+        cycleTurn();
+    }
 
     function getWidgetReference () {
         return boardWidget;
@@ -252,9 +251,10 @@ root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
 
-const gridSize = 5;
+const gridSize = 3;
 const players = [
-    PlayerFactory('Player', 'K', 'green', gridSize),
-    AiFactory(gridSize)
+    PlayerFactory('Player1', 'K', 'green', gridSize),
+    // AiFactory(gridSize)
+    PlayerFactory('Player2', 'J', 'red', gridSize)
 ];
 const match = MatchFactory(gridSize, players);
