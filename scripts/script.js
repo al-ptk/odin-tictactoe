@@ -38,7 +38,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         }
         spots.push(index);
         return hasVictory();
-    }
+    };
 
     function isValidLink(index, spot) {
         // p(`spot ${spot} and ${index}`);
@@ -49,7 +49,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         return onOppositeEdges(index, spot) 
             && isNeighbour(index, spot)
             && !links.includes([index,spot]);
-    }
+    };
 
     function onOppositeEdges (a, b) {
         a > b ? [a, b] = [b, a] : '';
@@ -60,7 +60,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         const result = !(aLeftEdge && bRightEdge || aRightEdge && bLeftEdge);
         // p(`${a} and ${b} NOT on opposite sides ${!result}`);
         return result;
-    }
+    };
 
     function isNeighbour(a, b) {
         a > b ? [a, b] = [b, a] : '';
@@ -72,7 +72,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
             || (a === (b - gridEdge + 1)) // north-east
             || (a === (b + gridEdge - 1)) // south-west
             || (a === (b - gridEdge - 1)) // north-west
-    }
+    };
 
     function hasVictory () {
         const tempLinks = [...links]
@@ -88,10 +88,10 @@ function PlayerFactory (name, symbol, color, gridEdge) {
                     p(`Winning Chain ${tempLink} + ${currentLoopLink}`)
                     return true;
                 }
-            }
-        }
+            };
+        };
         return false;
-    }
+    };
 
     function isChain (linkA, linkB) {
         let elementInCommon = linkA.includes(linkB[0]) || linkA.includes(linkB[1]);
@@ -104,42 +104,42 @@ function PlayerFactory (name, symbol, color, gridEdge) {
                 || isVerticalLine(chain)
                 || isBackslashLine(chain)
                 || isForwardslashLine(chain);
-        }
-    }
+        };
+    };
 
     function extractChain(linkA, linkB) {
         linkA.sort();
         linkB.sort();
         if (linkA[0] > linkB[0]) {
             [linkA, linkB] = [linkB, linkA];
-        }
+        };
         const chain = [
             linkA[0],
             linkA[1] > linkB[0] ? linkA[0] : linkB[0],
             linkB[1]
         ];
         return chain;
-    }
+    };
 
     function isHorizontalLine(chain) {
         return (chain[0] + 1) === chain[1]
             && (chain[0] + 2) === chain[2]
-    }
+    };
 
     function isVerticalLine(chain) {
         return (chain[0] + gridEdge) == chain[1]
             && (chain[0] + gridEdge *2 ) == chain[2];
-    }
+    };
 
     function isBackslashLine(chain) {
         return (chain[0] + (gridEdge + 1) * 1 ) == chain[1]
             && (chain[0] + (gridEdge + 1) * 2 ) == chain[2];
-    }
+    };
 
     function isForwardslashLine(chain) {
         return (chain[0] + (gridEdge - 1) * 1 ) == chain[1]
             && (chain[0] + (gridEdge - 1) * 2 ) == chain[2];
-    }
+    };
 
     return {
         getColor,
@@ -153,7 +153,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         isNeighbour,
         onOppositeEdges
     };
-}
+};
 
 function MatchFactory (gridEdge, players) {
     const board = new Array(gridEdge ** 2).fill('');
@@ -184,7 +184,7 @@ function MatchFactory (gridEdge, players) {
             p(`${players[currentTurn].getName()} won`);
         }
         cycleTurn();
-    }
+    };
 
     function getWidgetReference () {
         return boardWidget;
@@ -195,7 +195,7 @@ function MatchFactory (gridEdge, players) {
             const btn = document.querySelector(`#b${i}`);
             btn.textContent = board[i];
         }
-    }
+    };
 
     function getEmptySpaces () {
         const emptySpaces = [];
@@ -203,24 +203,24 @@ function MatchFactory (gridEdge, players) {
             if (board[i] === '') emptySpaces.push(i)
         }
         return emptySpaces
-    }
+    };
 
     function getFullBoard () {
         return board;
-    }
+    };
 
     function clearBoard () {
         for (let i = 0; i < board.length; i++) {
             board[i] = '';
         }
-    }
+    };
 
     function cycleTurn () {
         currentTurn++;
         if (currentTurn >= players.length) {
             currentTurn = 0;
         }
-    }
+    };
 
     return {
         clearBoard,
@@ -237,14 +237,14 @@ function AiFactory (gridEdge) {
         const randomIndex = Math.trunc(Math.random() * emptySpaces.length);
         const spot = emptySpaces[randomIndex];
         return spot;
-    }
+    };
 
     return Object.assign(
         PlayerFactory('Computer', 'C', 'blue', gridEdge),
         {
             getValidInput
         });
-}
+};
 
 const HTMLroot = document.querySelector(':root');
 const root = document.createElement('div');
