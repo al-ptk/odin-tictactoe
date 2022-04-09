@@ -182,7 +182,15 @@ function MatchFactory (gridEdge, players) {
             const gameOverModal = document.createElement('p');
             root.appendChild(gameOverModal);
             gameOverModal.classList.add('gameOverModal');
-            gameOverModal.textContent = `${players[currentTurn].getName()} won!`
+            gameOverModal.textContent = `${players[currentTurn].getName()} won!`;
+            const quitBtn = document.createElement('button');
+            gameOverModal.appendChild(quitBtn);
+            quitBtn.textContent = 'Quit';
+            quitBtn.addEventListener('click', e => {
+                root.removeChild(gameOverModal);
+                root.removeChild(boardWidget);
+                titleScreen({});
+            })
             currentTurn = -1;
             return;
         } else {
@@ -299,8 +307,8 @@ function pickGridSizeModal (data) {
         root.removeChild(container);
         data.gridSize = 3;
         const newMatch = MatchFactory(data.gridSize, 
-            [PlayerFactory('Player1', 'K', 'blue', data.gridSize),
-            PlayerFactory('Player2', 'C', 'green', data.gridSize)]);
+            [PlayerFactory('Player1', 'X', 'blue', data.gridSize),
+            PlayerFactory('Player2', 'O', 'green', data.gridSize)]);
     });
     container.appendChild(btn3);
 
