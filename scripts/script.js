@@ -43,11 +43,6 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     };
 
     function isValidLink(index, spot) {
-        // p(`spot ${spot} and ${index}`);
-        // p(`Not on opposite edges ${onOppositeEdges(index, spot)}`);
-        // p(`Is neighbour ${isNeighbour(index, spot)}`);
-        // p(`Link not included ${!links.includes([index,spot])}`)
-        // p('')
         return onOppositeEdges(index, spot) 
             && isNeighbour(index, spot)
             && !links.includes([index,spot]);
@@ -60,7 +55,6 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         const bLeftEdge = (b % gridEdge === 0);
         const bRightEdge = (b % gridEdge === gridEdge - 1);
         const result = !(aLeftEdge && bRightEdge || aRightEdge && bLeftEdge);
-        // p(`${a} and ${b} NOT on opposite sides ${!result}`);
         return result;
     };
 
@@ -172,12 +166,26 @@ function MatchFactory (gridEdge, players) {
         return root.appendChild(container);
     }(gridEdge));
 
-    function playerTurn (e) {
-        if (e.target.textContent !== '') return;
-        const index = e.target.id.slice(1);
+    function playerTurn (event) {
+        if (event.target.textContent !== '') return;
+        const index = event.target.id.slice(1);
         board[index] = players[currentTurn].getSymbol();
         const victory = players[currentTurn].registerMove(index)
         updateWidget();
+        const didWin = checkForVictory(victory);
+        if (didWin) {
+            return;
+        }
+        if (players[1].getName() === 'Computer'){
+            const aiPick = players[1].getValidInput(getEmptySpaces());
+            board[aiPick] = players[currentTurn].getSymbol();
+            const victory = players[currentTurn].registerMove(aiPick)
+            updateWidget();
+            checkForVictory(victory);
+        }
+    };
+
+    function checkForVictory (victory) {
         if (victory) {
             const gameOverModal = document.createElement('p');
             root.appendChild(gameOverModal);
@@ -192,15 +200,11 @@ function MatchFactory (gridEdge, players) {
                 titleScreen({});
             })
             currentTurn = -1;
-            return;
+            return true;
         } else {
             cycleTurn();
         }
-        p(players[1].getName());
-        if (players[1].getName() === 'Computer'){
-            console.log('hey!');
-        }
-    };
+    }
 
     function getWidgetReference () {
         return boardWidget;
@@ -275,20 +279,26 @@ function titleScreen (data) {
     root.appendChild(container)
 }
 
-function setPlayers () {
-    const p1 = 
+function setPlayers (singlePlayer, gridEdge) {
+    const p1 = PlayerFactory('Player 1', 'X', 'blue', gridEdge)
+    let p2;
+    if (singlePlayer) {
+        p2 = AiFactory(gridEdge);
+    } else {
+        p2 = PlayerFactory('Player 2', 'O', 'blue', gridEdge)
+    }
+    return [p1, p2];
 }
 
 function pickPlayerNumberModal (callback, data) {
     const container = document.createElement('div');
     root.appendChild(container);
-    // container.classList.add('pickPlayerNumberModal');
     container.classList.add('modals');
     const onePlayer = document.createElement('button');
     onePlayer.textContent = '1 Player';
     onePlayer.addEventListener('click', e => {
         root.removeChild(container);
-        // player stuff
+        data.singlePlayer = true;
         callback(data);
     })
     container.appendChild(onePlayer);
@@ -296,9 +306,9 @@ function pickPlayerNumberModal (callback, data) {
     twoPlayers.textContent = '2 Players';
     twoPlayers.addEventListener('click', e => {
         root.removeChild(container);
-        // player stuff
+        data.singlePlayer = false;
         callback(data);
-    ]})
+    })
     container.appendChild(twoPlayers)
 }
 
@@ -309,7 +319,9 @@ function pickGridSizeModal (data) {
     btn3.textContent = '3x3';
     btn3.addEventListener('click', e => {
         root.removeChild(container);
-        const newMatch = MatchFactory(3, data.players);
+        data.gridSize = 3
+        data.players = setPlayers(data.singlePlayer, data.gridSize)
+        const newMatch = MatchFactory(data.gridSize, data.players);
     });
     container.appendChild(btn3);
 
@@ -317,7 +329,9 @@ function pickGridSizeModal (data) {
     btn5.textContent = '5x5';
     btn5.addEventListener('click', e => {
         root.removeChild(container);
-        const newMatch = MatchFactory(5, data.players);
+        data.gridSize = 5
+        data.players = setPlayers(data.singlePlayer, data.gridSize)
+        const newMatch = MatchFactory(data.gridSize, data.players);
     });
     container.appendChild(btn5);
 
@@ -325,8 +339,9 @@ function pickGridSizeModal (data) {
     btn7.textContent = '7x7';
     btn7.addEventListener('click', e => {
         root.removeChild(container);
-        const newMatch = MatchFactory(7, data.players);
-            );
+        data.gridSize = 7
+        data.players = setPlayers(data.singlePlayer, data.gridSize)
+        const newMatch = MatchFactory(data.gridSize, data.players);
     });
     container.appendChild(btn7);
 
