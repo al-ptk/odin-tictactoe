@@ -181,7 +181,7 @@ function MatchFactory (gridEdge, players) {
         if (victory) {
             const gameOverModal = document.createElement('p');
             root.appendChild(gameOverModal);
-            gameOverModal.classList.add('gameOverModal');
+            gameOverModal.classList.add('modals');
             gameOverModal.textContent = `${players[currentTurn].getName()} won!`;
             const quitBtn = document.createElement('button');
             gameOverModal.appendChild(quitBtn);
@@ -258,14 +258,9 @@ function AiFactory (gridEdge) {
         });
 };
 
-// widgetBuilder gets object
-// clear itself from dom
-// set object to value
-// call next widget with obj.
-
 function titleScreen (data) {
     const container = document.createElement('div');
-    container.classList.add('titlScreen');
+    container.classList.add('modals');
     const newGame = document.createElement('button');
     newGame.textContent = 'Let\'s Play!';
     newGame.addEventListener('click', e => {
@@ -279,7 +274,8 @@ function titleScreen (data) {
 function pickPlayerNumberModal (callback, data) {
     const container = document.createElement('div');
     root.appendChild(container);
-    container.classList.add('pickPlayerModal');
+    // container.classList.add('pickPlayerNumberModal');
+    container.classList.add('modals');
     const onePlayer = document.createElement('button');
     onePlayer.textContent = '1 Player';
     onePlayer.addEventListener('click', e => {
@@ -300,7 +296,7 @@ function pickPlayerNumberModal (callback, data) {
 
 function pickGridSizeModal (data) {
     const container = document.createElement('div');
-    container.classList.add('pickGridSizeModal');
+    container.classList.add('modals');
     const btn3 = document.createElement('button');
     btn3.textContent = '3x3';
     btn3.addEventListener('click', e => {
@@ -342,6 +338,4 @@ const root = document.createElement('div');
 root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
-
-
 titleScreen({});
