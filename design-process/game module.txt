@@ -1,9 +1,39 @@
 
-let grid = ['' * 9]
+module game () {
+    currentMatchData = [];
 
-proc makeMove
-    Take player chosen cell
-    if cell not empty
-        return
-    Change element in array
-    Update grid
+    function setPlayers (1 | 2) {
+        if (1) {
+            players = [
+                PlayerFactory(),
+                AiFactory()
+            ]
+        }
+        if (2) {
+            players = [
+                PlayerFactory,
+                PlayerFactory
+            ]
+        }
+        currentMatchData.puch(players)
+    }
+
+    function setGrid (3 | 5 | 7) {
+        lineSize = arg === 3? 3 : 4;
+        gridData = [
+            gridEdge: arg,
+            lineSize
+        ]
+        currentMatchData.push(gridData);
+    }
+
+    setNewMatch (currentMatchData) {
+        const newMatch = MatchFactory(currentMatchData.gridData, currentMatchData.players)
+        currentMatchData.domReference = newMatch.domReference;
+    }
+
+    killMatch (currentMatchData) {
+        const x = currentMatchData.domReference;
+        x.parentNode.removeChild(x);
+    }
+}

@@ -300,7 +300,7 @@ function pickGridSizeModal (data) {
         data.gridSize = 3;
         const newMatch = MatchFactory(data.gridSize, 
             [PlayerFactory('Player1', 'K', 'blue', data.gridSize),
-            PlayerFactory('Player2', 'C', 'green', data.gridSize)])
+            PlayerFactory('Player2', 'C', 'green', data.gridSize)]);
     });
     container.appendChild(btn3);
 
@@ -309,7 +309,9 @@ function pickGridSizeModal (data) {
     btn5.addEventListener('click', e => {
         root.removeChild(container);
         data.gridSize = 5;
-        p(data);
+        const newMatch = MatchFactory(data.gridSize, 
+            [PlayerFactory('Player1', 'K', 'blue', data.gridSize),
+            PlayerFactory('Player2', 'C', 'green', data.gridSize)]);
     });
     container.appendChild(btn5);
 
@@ -318,7 +320,9 @@ function pickGridSizeModal (data) {
     btn7.addEventListener('click', e => {
         root.removeChild(container);
         data.gridSize = 7;
-        p(data);
+        const newMatch = MatchFactory(data.gridSize, 
+            [PlayerFactory('Player1', 'K', 'blue', data.gridSize),
+            PlayerFactory('Player2', 'C', 'green', data.gridSize)]);
     });
     container.appendChild(btn7);
 
