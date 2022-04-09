@@ -1,5 +1,20 @@
 Implementation details:
 
+
+Basic Fixes and Features
+• the ai to execute their turn the same way players get their turn invoked
+• make the hasVictory function take a lineSize parameter for checking this wincons
+• 
+
+Refactoring
+• Do a pure functions branch, where I parameterize most functions and eradicate shared state.
+• Improve the whole modals and screens stack navigation thing buzzword
+
+UI\Cosmetics that I procrastinate on
+• make player input name
+• make pick player get symbol and color 
+• Change color of symbols
+
     Javascipt:
     
         • The game module

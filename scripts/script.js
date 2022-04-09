@@ -196,6 +196,10 @@ function MatchFactory (gridEdge, players) {
         } else {
             cycleTurn();
         }
+        p(players[1].getName());
+        if (players[1].getName() === 'Computer'){
+            console.log('hey!');
+        }
     };
 
     function getWidgetReference () {
@@ -271,6 +275,10 @@ function titleScreen (data) {
     root.appendChild(container)
 }
 
+function setPlayers () {
+    const p1 = 
+}
+
 function pickPlayerNumberModal (callback, data) {
     const container = document.createElement('div');
     root.appendChild(container);
@@ -280,7 +288,7 @@ function pickPlayerNumberModal (callback, data) {
     onePlayer.textContent = '1 Player';
     onePlayer.addEventListener('click', e => {
         root.removeChild(container);
-        data.players = 1;
+        // player stuff
         callback(data);
     })
     container.appendChild(onePlayer);
@@ -288,9 +296,9 @@ function pickPlayerNumberModal (callback, data) {
     twoPlayers.textContent = '2 Players';
     twoPlayers.addEventListener('click', e => {
         root.removeChild(container);
-        data.players = 2;
+        // player stuff
         callback(data);
-    })
+    ]})
     container.appendChild(twoPlayers)
 }
 
@@ -301,10 +309,7 @@ function pickGridSizeModal (data) {
     btn3.textContent = '3x3';
     btn3.addEventListener('click', e => {
         root.removeChild(container);
-        data.gridSize = 3;
-        const newMatch = MatchFactory(data.gridSize, 
-            [PlayerFactory('Player1', 'X', 'blue', data.gridSize),
-            PlayerFactory('Player2', 'O', 'green', data.gridSize)]);
+        const newMatch = MatchFactory(3, data.players);
     });
     container.appendChild(btn3);
 
@@ -312,10 +317,7 @@ function pickGridSizeModal (data) {
     btn5.textContent = '5x5';
     btn5.addEventListener('click', e => {
         root.removeChild(container);
-        data.gridSize = 5;
-        const newMatch = MatchFactory(data.gridSize, 
-            [PlayerFactory('Player1', 'K', 'blue', data.gridSize),
-            PlayerFactory('Player2', 'C', 'green', data.gridSize)]);
+        const newMatch = MatchFactory(5, data.players);
     });
     container.appendChild(btn5);
 
@@ -323,10 +325,8 @@ function pickGridSizeModal (data) {
     btn7.textContent = '7x7';
     btn7.addEventListener('click', e => {
         root.removeChild(container);
-        data.gridSize = 7;
-        const newMatch = MatchFactory(data.gridSize, 
-            [PlayerFactory('Player1', 'K', 'blue', data.gridSize),
-            PlayerFactory('Player2', 'C', 'green', data.gridSize)]);
+        const newMatch = MatchFactory(7, data.players);
+            );
     });
     container.appendChild(btn7);
 
