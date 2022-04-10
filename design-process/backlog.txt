@@ -17,7 +17,6 @@ UI\Cosmetics that I procrastinate on
     Javascipt:
     
         • The game module
-        • Make the 'check win condition' funcionality works with lines bigger than 3 units
         • Think about how the turns are applied
         • Add inteligence to the AiFactory
 

@@ -1,7 +1,7 @@
 'use strict';
 const p = (str) => console.log(str);
 
-function PlayerFactory (name, symbol, color, gridEdge) {
+function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
     let score = 0;
     const spots = [];
     const links = [];
@@ -28,6 +28,10 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     function getCachedMoves () {
         return {spots, links};
     };
+    function setCachedMoves(spotsArray, linkArray) {
+        spots.push(...spotsArray)
+        links.push(...linkArray);
+    }
 
     function registerMove (index) {
         index = parseInt(index);
@@ -70,51 +74,47 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     };
 
     function hasVictory () {
-        const tempLinks = [...links]
-        while (tempLinks.length != 0) {
-
-            // Each loop pops the last element
-            // Then checks all other elements against the popped one
-            // That way, no element is checked for more than required
-
-            let currentLoopLink = tempLinks.pop()
+        if (links.length < chainLen - 1) return false;
+        const possibleChains = [];
+        const tempLinks = [...links];
+        let currentLink;
+        while (tempLinks.length){
             for (const tempLink of tempLinks) {
-                if (isChain(tempLink, currentLoopLink)) {
-                    p(`Winning Chain ${tempLink} + ${currentLoopLink}`)
+                currentLink = tempLinks.pop();
+                p(currentLink)
+                const currentChain = extendChain (currentLink, tempLink);
+                if (currentChain.length == chainLen
+                    && isValidChain(currentChain)){
                     return true;
                 }
-            };
-        };
+            }
+        }
         return false;
     };
 
-    function isChain (linkA, linkB) {
-        let firstInCommon = linkA.includes(linkB[0]);
-        let secondInCommon = linkA.includes(linkB[1]);
-        let elementInCommon = (firstInCommon || secondInCommon);
-        if (!elementInCommon) {
-            return false;
-        } else {
-            const chain = extendChain(linkA, linkB);
-            return isHorizontalLine(chain)
-                || isVerticalLine(chain)
-                || isBackslashLine(chain)
-                || isForwardslashLine(chain);
-        };
-    };
+    function extendChain (extended, extensor) {
+        let result = [...extended];
+        for (let element of extensor){
+            if (!extended.includes(element)){
+                result.push(element)
+            }
+        }
+        return result.sort((a,b) => a - b);
+    }
 
-    function extendChain(chainA, chainB) {
-        const result = [].push(...chainA.slice(0,-1), ...chainB);
-        return result;
-    };
+    function isValidChain (chain) {
+        return isHorizontalLine(chain)
+            || isVerticalLine(chain)
+            || isBackslashLine(chain)
+            || isForwardslashLine(chain);
+    }
 
     function isHorizontalLine(chain) {
         let result = true;
         for (let i = 0; i < chain.length - 1; i++){
             let currentNumber = chain[i];
             let nextNumber = chain[i+1];
-            result = currentNumber + 1 === nextNumber;
-            // Chains are ALWAYS is ascending order
+            result &= currentNumber + 1 === nextNumber;
         }
         return result;
     };
@@ -124,7 +124,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         for (let i = 0; i < chain.length - 1; i++){
             let currentNumber = chain[i] + gridEdge;
             let nextNumber = chain[i+1];
-            result = currentNumber === nextNumber;
+            result &= currentNumber === nextNumber;
         }
         return result;
     };
@@ -134,7 +134,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         for (let i = 0; i < chain.length - 1; i++){
             let currentNumber = chain[i] + (gridEdge + 1);
             let nextNumber = chain[i+1];
-            result = currentNumber === nextNumber;
+            result &= currentNumber === nextNumber;
         }
         return result;
     };
@@ -144,7 +144,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         for (let i = 0; i < chain.length - 1; i++){
             let currentNumber = chain[i] + (gridEdge - 1);
             let nextNumber = chain[i+1];
-            result = currentNumber === nextNumber;
+            result &= currentNumber === nextNumber;
         }
         return result;
     };
@@ -159,7 +159,10 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         clearCachedMoves,
         getCachedMoves,
         isNeighbour,
-        onOppositeEdges
+        onOppositeEdges,
+        hasVictory,
+        setCachedMoves,
+        extendChain
     };
 };
 
@@ -267,7 +270,7 @@ function MatchFactory (gridEdge, players) {
 };
 
 
-function AiFactory (gridEdge) {
+function AiFactory (gridEdge, chainLen) {
     function getValidInput (emptySpaces) {
         const randomIndex = Math.trunc(Math.random() * emptySpaces.length);
         const spot = emptySpaces[randomIndex];
@@ -275,7 +278,7 @@ function AiFactory (gridEdge) {
     };
 
     return Object.assign(
-        PlayerFactory('Computer', 'C', 'blue', gridEdge),
+        PlayerFactory('Computer', 'C', 'blue', gridEdge, chainLen),
         {
             getValidInput
         });
@@ -294,13 +297,13 @@ function titleScreen (data) {
     root.appendChild(container)
 }
 
-function setPlayers (singlePlayer, gridEdge) {
-    const p1 = PlayerFactory('Player 1', 'X', 'blue', gridEdge)
+function setPlayers (singlePlayer, gridEdge, chainLen) {
+    const p1 = PlayerFactory('Player 1', 'X', 'blue', gridEdge, chainLen)
     let p2;
     if (singlePlayer) {
-        p2 = AiFactory(gridEdge);
+        p2 = AiFactory(gridEdge, chainLen);
     } else {
-        p2 = PlayerFactory('Player 2', 'O', 'blue', gridEdge)
+        p2 = PlayerFactory('Player 2', 'O', 'blue', gridEdge, chainLen)
     }
     return [p1, p2];
 }
@@ -334,8 +337,9 @@ function pickGridSizeModal (data) {
     btn3.textContent = '3x3';
     btn3.addEventListener('click', e => {
         root.removeChild(container);
-        data.gridSize = 3
-        data.players = setPlayers(data.singlePlayer, data.gridSize)
+        data.gridSize = 3;
+        data.chainLen = 3;
+        data.players = setPlayers(data.singlePlayer, data.gridSize, data.chainLen)
         const newMatch = MatchFactory(data.gridSize, data.players);
     });
     container.appendChild(btn3);
@@ -344,8 +348,9 @@ function pickGridSizeModal (data) {
     btn5.textContent = '5x5';
     btn5.addEventListener('click', e => {
         root.removeChild(container);
-        data.gridSize = 5
-        data.players = setPlayers(data.singlePlayer, data.gridSize)
+        data.gridSize = 5;
+        data.chainLen = 4;
+        data.players = setPlayers(data.singlePlayer, data.gridSize, data.chainLen);
         const newMatch = MatchFactory(data.gridSize, data.players);
     });
     container.appendChild(btn5);
@@ -354,8 +359,9 @@ function pickGridSizeModal (data) {
     btn7.textContent = '7x7';
     btn7.addEventListener('click', e => {
         root.removeChild(container);
-        data.gridSize = 7
-        data.players = setPlayers(data.singlePlayer, data.gridSize)
+        data.gridSize = 7;
+        data.chainLen = 4;
+        data.players = setPlayers(data.singlePlayer, data.gridSize, data.chainLen)
         const newMatch = MatchFactory(data.gridSize, data.players);
     });
     container.appendChild(btn7);
