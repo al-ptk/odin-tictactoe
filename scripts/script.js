@@ -32,20 +32,15 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     function registerMove (index) {
         index = parseInt(index);
         for (const spot of spots) {
-            if (isValidLink(index, spot)) {
-                links.push(
-                    [index, spot].sort((a,b) => a - b)
-                    );
+            if (onOppositeEdges(index, spot) 
+            && isNeighbour(index, spot)
+            && !links.includes([index,spot])) {
+                // The code requires links to be in ascending order
+                links.push([index, spot].sort((a,b) => a - b));
             }
         }
         spots.push(index);
         return hasVictory();
-    };
-
-    function isValidLink(index, spot) {
-        return onOppositeEdges(index, spot) 
-            && isNeighbour(index, spot)
-            && !links.includes([index,spot]);
     };
 
     function onOppositeEdges (a, b) {
@@ -94,7 +89,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         if (!elementInCommon) {
             return false;
         } else {
-            const chain = extractChain(linkA, linkB);
+            const chain = extendChain(linkA, linkB);
             return isHorizontalLine(chain)
                 || isVerticalLine(chain)
                 || isBackslashLine(chain)
@@ -102,16 +97,10 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         };
     };
 
-    function extractChain(linkA, linkB) {
-        if (linkA[0] > linkB[0]) {
-            [linkA, linkB] = [linkB, linkA];
-        };
-        const chain = [
-            linkA[0],
-            linkA[1] > linkB[0] ? linkA[0] : linkB[0],
-            linkB[1]
-        ];
-        return chain;
+    function extendChain(chainA, chainB) {
+        chainA.pop();
+        const result = [].push(...chainA, ...chainB);
+        return result;
     };
 
     function isHorizontalLine(chain) {
