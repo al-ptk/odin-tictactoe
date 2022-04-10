@@ -89,7 +89,9 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     };
 
     function isChain (linkA, linkB) {
-        let elementInCommon = linkA.includes(linkB[0]) || linkA.includes(linkB[1]);
+        let firstInCommon = linkA.includes(linkB[0]);
+        let secondInCommon = linkA.includes(linkB[1]);
+        let elementInCommon = (firstInCommon || secondInCommon);
         if (!elementInCommon) {
             return false;
         } else {
@@ -102,8 +104,7 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     };
 
     function extendChain(chainA, chainB) {
-        chainA.pop();
-        const result = [].push(...chainA, ...chainB);
+        const result = [].push(...chainA.slice(0,-1), ...chainB);
         return result;
     };
 
@@ -133,14 +134,19 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         for (let i = 0; i < chain.length - 1; i++){
             let currentNumber = chain[i] + (gridEdge + 1);
             let nextNumber = chain[i+1];
-            result = currentNumber === nextNumber;)
+            result = currentNumber === nextNumber;
         }
         return result;
     };
 
     function isForwardslashLine(chain) {
-        return (chain[0] + (gridEdge - 1) * 1 ) == chain[1]
-            && (chain[0] + (gridEdge - 1) * 2 ) == chain[2];
+        let result = true;
+        for (let i = 0; i < chain.length - 1; i++){
+            let currentNumber = chain[i] + (gridEdge - 1);
+            let nextNumber = chain[i+1];
+            result = currentNumber === nextNumber;
+        }
+        return result;
     };
 
     return {
