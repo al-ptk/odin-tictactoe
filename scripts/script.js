@@ -111,22 +111,31 @@ function PlayerFactory (name, symbol, color, gridEdge) {
         let result = true;
         for (let i = 0; i < chain.length - 1; i++){
             let currentNumber = chain[i];
-            let nextNumber = chain[i+1]
+            let nextNumber = chain[i+1];
             result = currentNumber + 1 === nextNumber;
             // Chains are ALWAYS is ascending order
         }
         return result;
-    }
     };
 
     function isVerticalLine(chain) {
-        return (chain[0] + gridEdge) == chain[1]
-            && (chain[0] + gridEdge *2 ) == chain[2];
+        let result = true;
+        for (let i = 0; i < chain.length - 1; i++){
+            let currentNumber = chain[i] + gridEdge;
+            let nextNumber = chain[i+1];
+            result = currentNumber === nextNumber;
+        }
+        return result;
     };
 
     function isBackslashLine(chain) {
-        return (chain[0] + (gridEdge + 1) * 1 ) == chain[1]
-            && (chain[0] + (gridEdge + 1) * 2 ) == chain[2];
+        let result = true;
+        for (let i = 0; i < chain.length - 1; i++){
+            let currentNumber = chain[i] + (gridEdge + 1);
+            let nextNumber = chain[i+1];
+            result = currentNumber === nextNumber;)
+        }
+        return result;
     };
 
     function isForwardslashLine(chain) {
