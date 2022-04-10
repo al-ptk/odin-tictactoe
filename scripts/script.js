@@ -44,6 +44,10 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     };
 
     function onOppositeEdges (a, b) {
+        // The data is save in a one-dimension array.
+        // As such, the only quirks I must deal with is when
+        // opposite sides has adjacent index values.
+        // The code below solves that issue!
         a > b ? [a, b] = [b, a] : '';
         const aLeftEdge = (a % gridEdge === 0);
         const aRightEdge = (a % gridEdge === gridEdge - 1);
@@ -104,8 +108,15 @@ function PlayerFactory (name, symbol, color, gridEdge) {
     };
 
     function isHorizontalLine(chain) {
-        return (chain[0] + 1) === chain[1]
-            && (chain[0] + 2) === chain[2]
+        let result = true;
+        for (let i = 0; i < chain.length - 1; i++){
+            let currentNumber = chain[i];
+            let nextNumber = chain[i+1]
+            result = currentNumber + 1 === nextNumber;
+            // Chains are ALWAYS is ascending order
+        }
+        return result;
+    }
     };
 
     function isVerticalLine(chain) {
