@@ -79,18 +79,36 @@ function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
         const tempLinks = [...links];
         let currentLink;
         while (tempLinks.length){
+            currentLink = tempLinks.pop(); // call once
             for (const tempLink of tempLinks) {
-                currentLink = tempLinks.pop();
-                p(currentLink)
-                const currentChain = extendChain (currentLink, tempLink);
-                if (currentChain.length == chainLen
-                    && isValidChain(currentChain)){
-                    return true;
+                if (isConnected(currentLink, tempLink)){ // recurse
+                    const currentChain = extendChain (currentLink, tempLink);
+                    p(currentLink + ' ' + tempLink);
+                    if (currentChain.length == chainLen
+                        && isValidChain(currentChain)){
+                        return true;
+                    }
                 }
             }
         }
         return false;
     };
+
+    function isConnected (chainA, chainB) {
+        let result = false;
+        for (const element of chainA){
+            result |= chainB.includes(element);
+        }
+        return result;
+    }
+
+    function checkWinningChain (iter, remaining, possibleWin) {
+        if (iter === 0){
+            return possibleWin;
+        } else {
+
+        }
+    }
 
     function extendChain (extended, extensor) {
         let result = [...extended];
@@ -162,7 +180,9 @@ function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
         onOppositeEdges,
         hasVictory,
         setCachedMoves,
-        extendChain
+        extendChain,
+        isConnected,
+        isValidChain
     };
 };
 
@@ -369,9 +389,28 @@ function pickGridSizeModal (data) {
     root.appendChild(container);
 }
 
-const HTMLroot = document.querySelector(':root');
-const root = document.createElement('div');
-root.id = 'appRoot';
-const body = document.querySelector('body');
-body.appendChild(root);
-titleScreen({});
+function arrayEquals(a, b) {
+    return Array.isArray(a) &&
+        Array.isArray(b) &&
+        a.length === b.length &&
+        a.every((val, index) => val === b[index]);
+}
+
+// const HTMLroot = document.querySelector(':root');
+// const root = document.createElement('div');
+// root.id = 'appRoot';
+// const body = document.querySelector('body');
+// body.appendChild(root);
+// titleScreen({});
+
+const p1 = PlayerFactory('a', 'a', 'blue', 3, 3);
+p1.setCachedMoves([0,6,12,18],
+    [
+        [ 0,  6],
+        [ 6, 12],
+        [12, 18],
+        [ 0,  4],
+        [ 0,  8]
+    ])
+// p(p1.getCachedMoves());
+p(Boolean(p1.isValidChain([6, 7, 11])));
