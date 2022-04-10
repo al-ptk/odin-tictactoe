@@ -1,0 +1,41 @@
+
+go through all remanant links
+if possibleWin === extendedChain(possibleWin, link)
+    continue
+else
+    is possibleWin valid? Raise victory flag
+
+
+f something (iter, list, currenLink = undefined) {
+    if list.length == 0
+        return 
+    currentLink = list.slice(-1)
+    for (let i = 0; i < list.length - 1; i++){
+        const tempLink = list[i];
+        if isConnected(currentLink, tempLink){
+            newList = [...list].splice(i, 1)
+            something (iter - 1, newList, )
+        }
+    }
+}
+
+[a, b, c, d, e]
+[a, b, c, d] + [e]
+[a, b, d] + [ce]
+
+tempLinks = [...links]
+while tempLinks.length > 0
+    curChain 
+    for link of links
+        if isConnected(curChain, link)
+            newChain = extendChain(curChain, link )
+            if isValidChain(newChain)
+                if (newChain.length < chainLen)
+                    newLinks = [..links].splice(linkIndex, 1)
+                    for link in newLinks
+                        if isConnected(newChain, link)
+                            newerChain = extendChain(newChain, link)
+                            if isValidChain(newerChain)
+                                return true
+                else
+                    return true

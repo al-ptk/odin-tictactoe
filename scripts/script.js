@@ -75,18 +75,31 @@ function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
 
     function hasVictory () {
         if (links.length < chainLen - 1) return false;
-        const possibleChains = [];
         const tempLinks = [...links];
         let currentLink;
-        while (tempLinks.length){
-            currentLink = tempLinks.pop(); // call once
-            for (const tempLink of tempLinks) {
-                if (isConnected(currentLink, tempLink)){ // recurse
+        while (tempLinks.length > 0){
+            currentLink = tempLinks.pop();
+            for (let i = 0; i < tempLinks.length; i++) {
+                const tempLink = tempLinks[i];
+                if (isConnected(currentLink, tempLink)){
                     const currentChain = extendChain (currentLink, tempLink);
-                    p(currentLink + ' ' + tempLink);
-                    if (currentChain.length == chainLen
-                        && isValidChain(currentChain)){
-                        return true;
+                    if (isValidChain(currentChain)){
+                        if (chainLen > currentChain.length){
+                            for (const nextLink of tempLinks){
+                                if (nextLink === tempLink) {
+                                    continue;
+                                }
+                                if (isConnected(currentChain, nextLink)){
+                                    const newerChain = extendChain(currentChain,nextLink);
+                                    if (isValidChain(newerChain)
+                                        && newerChain.length === chainLen){
+                                        return true
+                                    }
+                                }
+                            }
+                        } else {
+                            return true;
+                        }
                     }
                 }
             }
@@ -100,14 +113,6 @@ function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
             result |= chainB.includes(element);
         }
         return result;
-    }
-
-    function checkWinningChain (iter, remaining, possibleWin) {
-        if (iter === 0){
-            return possibleWin;
-        } else {
-
-        }
     }
 
     function extendChain (extended, extensor) {
@@ -396,21 +401,22 @@ function arrayEquals(a, b) {
         a.every((val, index) => val === b[index]);
 }
 
-// const HTMLroot = document.querySelector(':root');
-// const root = document.createElement('div');
-// root.id = 'appRoot';
-// const body = document.querySelector('body');
-// body.appendChild(root);
-// titleScreen({});
+const HTMLroot = document.querySelector(':root');
+const root = document.createElement('div');
+root.id = 'appRoot';
+const body = document.querySelector('body');
+body.appendChild(root);
+titleScreen({});
 
-const p1 = PlayerFactory('a', 'a', 'blue', 3, 3);
-p1.setCachedMoves([0,6,12,18],
-    [
-        [ 0,  6],
-        [ 6, 12],
-        [12, 18],
-        [ 0,  4],
-        [ 0,  8]
-    ])
-// p(p1.getCachedMoves());
-p(Boolean(p1.isValidChain([6, 7, 11])));
+// const p1 = PlayerFactory('a', 'a', 'blue', 5, 3);
+// p1.setCachedMoves([0,6,12,18],
+//     [
+//         [ 0,  6],
+//         [ 6, 12],
+//         [12, 18],
+//         [ 0,  4],
+//         [ 4,  8]
+//     ])
+// // p(p1.getCachedMoves());
+// // p(p1.isValidChain([2,6,11]));
+// p(p1.hasVictory());
