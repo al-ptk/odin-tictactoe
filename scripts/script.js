@@ -98,7 +98,6 @@ function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
                                 }
                             }
                         } else {
-                            // p(currentChain)
                             return true;
                         }
                     }
@@ -171,7 +170,6 @@ function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
         if (chainLen === 3
             && (chain[0] === 0
             ||  chain[chainLen-1] === 8)){
-                p('here again')
                 return false;                
             }
         let result = true;
@@ -280,8 +278,16 @@ function MatchFactory (gridEdge, players) {
 
     function updateWidget () {
         for (let i = 0; i < gridEdge ** 2; i++){
-            const btn = document.querySelector(`#b${i}`);
-            btn.textContent = board[i];
+            if (board[i] === players[0].getSymbol()){
+                const btn = document.querySelector(`#b${i}`);
+                btn.textContent = board[i];
+                btn.style.color = players[0].getColor();
+            }
+            if (board[i] === players[1].getSymbol()){
+                const btn = document.querySelector(`#b${i}`);
+                btn.textContent = board[i];
+                btn.style.color = players[1].getColor();
+            }
         }
     };
 
@@ -353,7 +359,7 @@ function setPlayers (singlePlayer, gridEdge, chainLen) {
     if (singlePlayer) {
         p2 = AiFactory(gridEdge, chainLen);
     } else {
-        p2 = PlayerFactory('Player 2', 'O', 'blue', gridEdge, chainLen)
+        p2 = PlayerFactory('Player 2', 'O', 'red', gridEdge, chainLen)
     }
     return [p1, p2];
 }
