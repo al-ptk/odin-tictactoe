@@ -207,25 +207,38 @@ function MatchFactory (gridEdge, players) {
     const boardWidget = (function (gridEdge) {
         HTMLroot.style.setProperty('--gridEdge', gridEdge);
         const container = document.createElement('div');
-        container.classList.add('board-container')
+        const boardContainer = document.createElement('div')
+        boardContainer.classList.add('board-container')
+        container.appendChild(boardContainer);
         for (let i = 0; i < gridEdge ** 2; i ++) {
             const button = document.createElement('button');
             button.id = `b${i}`;
             button.classList.add('board-cell');
             button.addEventListener ('click', playerTurn)
-            container.appendChild(button);
+            boardContainer.appendChild(button);
         }
         const clearButton = document.createElement('button');
         clearButton.classList.add('clearButton');
         clearButton.textContent = 'Reset Game';
         clearButton.style.fontSize = '22px'
-        root.appendChild(clearButton)
+        container.appendChild(clearButton)
+        clearButton.addEventListener('click', e => {
+           clearBoard();
+           for (const player of players){
+               player.clearCachedMoves();
+           }
+           updateWidget();
+        })
 
         const quitButton = document.createElement('button');
         quitButton.classList.add('quitButton');
         quitButton.textContent = 'Quit Game';
         quitButton.style.fontSize = '22px'
-        root.appendChild(quitButton)
+        container.appendChild(quitButton)
+        quitButton.addEventListener('click', e => {
+            root.removeChild(container);
+            titleScreen({});
+        })
 
         return root.appendChild(container);        
     }(gridEdge));
@@ -290,15 +303,20 @@ function MatchFactory (gridEdge, players) {
 
     function updateWidget () {
         for (let i = 0; i < gridEdge ** 2; i++){
+
+            const btn = document.querySelector(`#b${i}`);
+
             if (board[i] === players[0].getSymbol()){
-                const btn = document.querySelector(`#b${i}`);
                 btn.textContent = board[i];
                 btn.style.color = players[0].getColor();
             }
+
             if (board[i] === players[1].getSymbol()){
-                const btn = document.querySelector(`#b${i}`);
                 btn.textContent = board[i];
                 btn.style.color = players[1].getColor();
+            }
+            if (board[i] === '') {
+                btn.textContent = '';
             }
         }
     };
@@ -459,8 +477,7 @@ const root = document.createElement('div');
 root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
-// titleScreen({});
-const b = MatchFactory(3, []);
+titleScreen({});
 
 
 // const p1 = PlayerFactory('a', 'a', 'blue', 5, 3);
