@@ -1,12 +1,6 @@
 Implementation details:
 
-
-Basic Fixes and Features
-• make the hasVictory function take a lineSize parameter for checking this wincons
-• 
-
 Refactoring
-• Do a pure functions branch, where I parameterize most functions and eradicate shared state.
 • Improve the whole modals and screens stack navigation thing buzzword
 
 UI\Cosmetics that I procrastinate on
@@ -16,8 +10,8 @@ UI\Cosmetics that I procrastinate on
 
     Javascipt:
     
+        • Add a tie functionality
         • The game module
-        • Think about how the turns are applied
         • Add inteligence to the AiFactory
 
 

@@ -39,7 +39,7 @@ function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
             if (onOppositeEdges(index, spot) 
             && isNeighbour(index, spot)
             && !links.includes([index,spot])) {
-                // The code requires links to be in ascending order
+
                 links.push([index, spot].sort((a,b) => a - b));
             }
         }
@@ -98,6 +98,7 @@ function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
                                 }
                             }
                         } else {
+                            // p(currentChain)
                             return true;
                         }
                     }
@@ -133,6 +134,10 @@ function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
     }
 
     function isHorizontalLine(chain) {
+        if (chainLen === 3
+            && !(chain[0] % gridEdge === 0)) {
+                return false;
+        }
         let result = true;
         for (let i = 0; i < chain.length - 1; i++){
             let currentNumber = chain[i];
@@ -163,6 +168,12 @@ function PlayerFactory (name, symbol, color, gridEdge, chainLen) {
     };
 
     function isForwardslashLine(chain) {
+        if (chainLen === 3
+            && (chain[0] === 0
+            ||  chain[chainLen-1] === 8)){
+                p('here again')
+                return false;                
+            }
         let result = true;
         for (let i = 0; i < chain.length - 1; i++){
             let currentNumber = chain[i] + (gridEdge - 1);
@@ -225,6 +236,20 @@ function MatchFactory (gridEdge, players) {
             const victory = players[currentTurn].registerMove(aiPick)
             updateWidget();
             checkForVictory(victory);
+        }
+        if (getEmptySpaces().length <= 0){
+            const gameOverModal = document.createElement('p');
+            root.appendChild(gameOverModal);
+            gameOverModal.classList.add('modals');
+            gameOverModal.textContent = `Tie!`;
+            const quitBtn = document.createElement('button');
+            gameOverModal.appendChild(quitBtn);
+            quitBtn.textContent = 'Quit';
+            quitBtn.addEventListener('click', e => {
+                root.removeChild(gameOverModal);
+                root.removeChild(boardWidget);
+                titleScreen({});
+            })
         }
     };
 
