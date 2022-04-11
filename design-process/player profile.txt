@@ -1,0 +1,17 @@
+
+get symbol and color for player one
+if there is two plaers 
+    get symbol color for player two
+else 
+    set color and symbol for ai OR
+    get random symbol and color for ai
+
+
+Player 1 color:
+* rows of colors * 
+Player one symbol
+* carousel of symbols *
+Confirm button
+
+both can use a radio field, where only one option is available
+the confirm button is only active once the data is collected

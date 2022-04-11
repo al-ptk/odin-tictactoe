@@ -2,8 +2,6 @@ Implementation details:
 
     HTML-DOM:
 
-        • Reset button
-        • Quit button
         • Get player profile modal (symbol and color ONLY);
 
 

@@ -416,6 +416,21 @@ function pickPlayerNumberModal (callback, data) {
     container.appendChild(twoPlayers)
 }
 
+function pickSymbolAndColor (callback, data) {
+    const container = document.createElement('div');
+    container.classList.add('modals');
+    root.appendChild(container);
+
+    const playerColorArea = document.createElement('div');
+    const playerColorLabel = document.createElement('label');
+    playerColorLabel.textContent = 'Pick a color:'
+    const playerColorRadio = document.createElement('input');
+    playerColorRadio.setAttribute('type', 'radio')
+    playerColorArea.appendChild(playerColorRadio);
+    playerColorArea.appendChild(playerColorLabel);
+    container.appendChild(playerColorArea);
+}
+
 function pickGridSizeModal (data) {
     const container = document.createElement('div');
     container.classList.add('modals');
@@ -477,18 +492,5 @@ const root = document.createElement('div');
 root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
-titleScreen({});
-
-
-// const p1 = PlayerFactory('a', 'a', 'blue', 5, 3);
-// p1.setCachedMoves([0,6,12,18],
-//     [
-//         [ 0,  6],
-//         [ 6, 12],
-//         [12, 18],
-//         [ 0,  4],
-//         [ 4,  8]
-//     ])
-// // p(p1.getCachedMoves());
-// // p(p1.isValidChain([2,6,11]));
-// p(p1.hasVictory());
+// titleScreen({});
+// pickSymbolAndColor(() => p('salut mortel'), {singlePlayer: false});
