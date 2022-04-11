@@ -3,12 +3,12 @@ Implementation details:
     HTML-DOM:
 
         • Reset button
-        • Back button
+        • Quit button
         • Get player profile modal (name, symbol, color);
 
 
     UI\Cosmetics that I procrastinate on
-    
+
         • Change color of symbols
 
     CSS:

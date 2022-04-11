@@ -334,7 +334,7 @@ function AiFactory (gridEdge, chainLen) {
     };
 
     return Object.assign(
-        PlayerFactory('Computer', 'C', 'blue', gridEdge, chainLen),
+        PlayerFactory('Computer', 'C', 'green', gridEdge, chainLen),
         {
             getValidInput
         });
@@ -389,6 +389,16 @@ function pickPlayerNumberModal (callback, data) {
 function pickGridSizeModal (data) {
     const container = document.createElement('div');
     container.classList.add('modals');
+
+    const backButton = document.createElement('button');
+    container.appendChild(backButton);
+    backButton.textContent = '←';
+    backButton.classList.add('backButton');
+    backButton.addEventListener('click', e => {
+        pickPlayerNumberModal(pickGridSizeModal, {})
+        container.parentNode.removeChild(container);
+    })
+
     const btn3 = document.createElement('button');
     btn3.textContent = '3x3';
     btn3.addEventListener('click', e => {
@@ -437,7 +447,8 @@ const root = document.createElement('div');
 root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
-titleScreen({});
+// titleScreen({});
+pickGridSizeModal()
 
 // const p1 = PlayerFactory('a', 'a', 'blue', 5, 3);
 // p1.setCachedMoves([0,6,12,18],

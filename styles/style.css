@@ -44,3 +44,13 @@
     background-color: sandybrown;
     gap: 10px;
 }
+
+.backButton {
+    position: absolute;
+    top: 5px;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    height: .7rem;
+    padding-bottom: .3rem;
+}
