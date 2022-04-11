@@ -215,7 +215,19 @@ function MatchFactory (gridEdge, players) {
             button.addEventListener ('click', playerTurn)
             container.appendChild(button);
         }
-        return root.appendChild(container);
+        const clearButton = document.createElement('button');
+        clearButton.classList.add('clearButton');
+        clearButton.textContent = 'Reset Game';
+        clearButton.style.fontSize = '22px'
+        root.appendChild(clearButton)
+
+        const quitButton = document.createElement('button');
+        quitButton.classList.add('quitButton');
+        quitButton.textContent = 'Quit Game';
+        quitButton.style.fontSize = '22px'
+        root.appendChild(quitButton)
+
+        return root.appendChild(container);        
     }(gridEdge));
 
     function playerTurn (event) {
@@ -448,7 +460,8 @@ root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
 // titleScreen({});
-pickGridSizeModal()
+const b = MatchFactory(3, []);
+
 
 // const p1 = PlayerFactory('a', 'a', 'blue', 5, 3);
 // p1.setCachedMoves([0,6,12,18],

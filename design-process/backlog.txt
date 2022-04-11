@@ -4,7 +4,7 @@ Implementation details:
 
         • Reset button
         • Quit button
-        • Get player profile modal (name, symbol, color);
+        • Get player profile modal (symbol and color ONLY);
 
 
     UI\Cosmetics that I procrastinate on
