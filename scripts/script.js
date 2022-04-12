@@ -431,18 +431,25 @@ function pickSymbolAndColor (callback, data) {
     container.appendChild(playerColorArea);
 }
 
+function backButton (previousModal, currentModal, data) {
+    const backButton = document.createElement('button');
+    backButton.textContent = '←';
+    backButton.classList.add('backButton');
+    backButton.addEventListener('click', e => {
+        p(data);
+        previousModal(currentModal, data)
+        e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+    })
+    return backButton;
+}
+
 function pickGridSizeModal (data) {
     const container = document.createElement('div');
     container.classList.add('modals');
 
-    const backButton = document.createElement('button');
-    container.appendChild(backButton);
-    backButton.textContent = '←';
-    backButton.classList.add('backButton');
-    backButton.addEventListener('click', e => {
-        pickPlayerNumberModal(pickGridSizeModal, {})
-        container.parentNode.removeChild(container);
-    })
+    p(data);
+    const backBtn = backButton(pickPlayerNumberModal, pickGridSizeModal, data);
+    container.appendChild(backBtn);
 
     const btn3 = document.createElement('button');
     btn3.textContent = '3x3';
@@ -480,17 +487,10 @@ function pickGridSizeModal (data) {
     root.appendChild(container);
 }
 
-function arrayEquals(a, b) {
-    return Array.isArray(a) &&
-        Array.isArray(b) &&
-        a.length === b.length &&
-        a.every((val, index) => val === b[index]);
-}
-
 const HTMLroot = document.querySelector(':root');
 const root = document.createElement('div');
 root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
-// titleScreen({});
+titleScreen({});
 // pickSymbolAndColor(() => p('salut mortel'), {singlePlayer: false});
