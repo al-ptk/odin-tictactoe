@@ -383,13 +383,21 @@ function titleScreen (data) {
     root.appendChild(container)
 }
 
-function setPlayers (singlePlayer, gridEdge, chainLen) {
-    const p1 = PlayerFactory('Player 1', 'X', 'blue', gridEdge, chainLen)
+function setPlayers (data) {
+    const {gridSize, chainLen, singlePlayer, playerOne} = data;
+    p(gridSize);
+    const p1 = PlayerFactory(
+            'Player 1', 
+            playerOne.symbol, 
+            playerOne.color, 
+            gridSize, 
+            chainLen
+        )
     let p2;
     if (singlePlayer) {
-        p2 = AiFactory(gridEdge, chainLen);
+        p2 = AiFactory(gridSize, chainLen);
     } else {
-        p2 = PlayerFactory('Player 2', 'O', 'red', gridEdge, chainLen)
+        p2 = PlayerFactory('Player 2', 'O', 'red', gridSize, chainLen)
     }
     return [p1, p2];
 }
@@ -447,7 +455,23 @@ function createRadioField(id, legendText, items) {
         field.appendChild(label);
     }
     field.appendChild(legend);
-    return field;
+
+    function getDOM () {
+        return field;
+    }
+
+    function getPickedValue () {
+        for (const item of field.childNodes){
+            if (item.checked) {
+                return item.value;
+            }
+        }
+    }
+
+    return {
+        getDOM,
+        getPickedValue
+    }
 }
 
 function pickSymbolAndColor (callback, data) {
@@ -458,11 +482,11 @@ function pickSymbolAndColor (callback, data) {
 
     const colors = ['blue', 'red', 'green', 'yellow'];
     const colorField = createRadioField('colorPicker', 'Pick a Color:', colors);
-    container.appendChild(colorField);
+    container.appendChild(colorField.getDOM());
 
     const symbols = ['X', 'O', '🤣', '😍', '🤔']
     const symbolField = createRadioField('symbolPicker', 'Pick a Symbol:', symbols)
-    container.appendChild(symbolField);
+    container.appendChild(symbolField.getDOM());
 
     const backBtn = backButton(pickPlayerNumberModal, pickSymbolAndColor, data);
     container.appendChild(backBtn);
@@ -471,8 +495,16 @@ function pickSymbolAndColor (callback, data) {
     confirmButton.textContent = 'Confirm';
     confirmButton.style.fontSize = '24px';
     confirmButton.addEventListener('click', e => {
-        container.parentElement.removeChild(container);
-        callback(data);
+        if (data.singlePlayer){            
+            container.parentElement.removeChild(container);
+            data.playerOne = {
+                'symbol' : symbolField.getPickedValue(),
+                'color': colorField.getPickedValue()
+            };
+            callback(data);
+        } else {
+            p(symbolField.getPickedValue());
+        }
     });
     container.appendChild(confirmButton);
 }
@@ -503,7 +535,7 @@ function pickGridSizeModal (data) {
         root.removeChild(container);
         data.gridSize = 3;
         data.chainLen = 3;
-        data.players = setPlayers(data.singlePlayer, data.gridSize, data.chainLen)
+        data.players = setPlayers(data)
         const newMatch = MatchFactory(data.gridSize, data.players);
     });
     container.appendChild(btn3);
@@ -514,7 +546,7 @@ function pickGridSizeModal (data) {
         root.removeChild(container);
         data.gridSize = 5;
         data.chainLen = 4;
-        data.players = setPlayers(data.singlePlayer, data.gridSize, data.chainLen);
+        data.players = setPlayers(data);
         const newMatch = MatchFactory(data.gridSize, data.players);
     });
     container.appendChild(btn5);
@@ -525,7 +557,7 @@ function pickGridSizeModal (data) {
         root.removeChild(container);
         data.gridSize = 7;
         data.chainLen = 4;
-        data.players = setPlayers(data.singlePlayer, data.gridSize, data.chainLen)
+        data.players = setPlayers(data)
         const newMatch = MatchFactory(data.gridSize, data.players);
     });
     container.appendChild(btn7);
@@ -539,3 +571,4 @@ root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
 titleScreen({});
+// pickSymbolAndColor(()=>{}, {singlePlayer: true});
