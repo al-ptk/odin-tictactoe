@@ -245,6 +245,7 @@ function MatchFactory (gridEdge, players) {
 
     function playerTurn (event) {
         if (event.target.textContent !== '') return;
+        event.target.classList.add(`p${currentTurn}`);
         const index = event.target.id.slice(1);
         board[index] = players[currentTurn].getSymbol();
         const victory = players[currentTurn].registerMove(index)
@@ -256,6 +257,7 @@ function MatchFactory (gridEdge, players) {
         if (players[1].getName() === 'Computer'){
             const aiPick = players[1].getValidInput(getEmptySpaces());
             board[aiPick] = players[currentTurn].getSymbol();
+            document.querySelector(`#b${aiPick}`).classList.add(`p${currentTurn}`)
             const victory = players[currentTurn].registerMove(aiPick)
             updateWidget();
             checkForVictory(victory);
@@ -306,15 +308,6 @@ function MatchFactory (gridEdge, players) {
 
             const btn = document.querySelector(`#b${i}`);
 
-            if (board[i] === players[0].getSymbol()){
-                btn.textContent = board[i];
-                btn.style.color = players[0].getColor();
-            }
-
-            if (board[i] === players[1].getSymbol()){
-                btn.textContent = board[i];
-                btn.style.color = players[1].getColor();
-            }
             if (board[i] === '') {
                 btn.textContent = '';
             }
@@ -377,7 +370,7 @@ function titleScreen (data) {
     newGame.textContent = 'Let\'s Play!';
     newGame.addEventListener('click', e => {
         root.removeChild(container);
-        pickPlayerNumberModal(pickSymbolAndColor, data)
+        pickPlayerNumberModal(pickSymbolAndColor, 'Player 1', data);
     });
     container.appendChild(newGame);
     root.appendChild(container)
@@ -385,30 +378,31 @@ function titleScreen (data) {
 
 function setPlayers (data) {
     const {gridSize, chainLen, singlePlayer, playerOne, playerTwo} = data;
-    p(gridSize);
     const p1 = PlayerFactory(
             'Player 1', 
             playerOne.symbol, 
             playerOne.color, 
             gridSize, 
-            chainLen
-        )
+            chainLen);
+            
+    
     let p2;
     if (singlePlayer) {
         p2 = AiFactory(gridSize, chainLen);
     } else {
+        p(playerOne);
+        p(playerTwo);
         p2 = PlayerFactory(
             'Player 2', 
             playerTwo.symbol, 
             playerTwo.color,
             gridSize,
-            chainLen
-        );
+            chainLen);
     }
     return [p1, p2];
 }
 
-function pickPlayerNumberModal (callback, data) {
+function pickPlayerNumberModal (callback, title, data) {
     const container = document.createElement('div');
     root.appendChild(container);
     container.classList.add('modals');
@@ -417,7 +411,7 @@ function pickPlayerNumberModal (callback, data) {
     onePlayer.addEventListener('click', e => {
         root.removeChild(container);
         data.singlePlayer = true;
-        callback(pickGridSizeModal, data);
+        callback(pickGridSizeModal, title, data);
     })
     container.appendChild(onePlayer);
     const twoPlayers = document.createElement('button');
@@ -425,7 +419,7 @@ function pickPlayerNumberModal (callback, data) {
     twoPlayers.addEventListener('click', e => {
         root.removeChild(container);
         data.singlePlayer = false;
-        callback(pickGridSizeModal, data);
+        callback(pickGridSizeModal, title, data);
     })
     container.appendChild(twoPlayers)
 }
@@ -480,11 +474,15 @@ function createRadioField(id, legendText, items) {
     }
 }
 
-function pickSymbolAndColor (callback, data) {
+function pickSymbolAndColor (callback, title, data) {
     const container = document.createElement('div');
     container.classList.add('modals');
     container.style.height = 'fit-content';
     root.appendChild(container);
+
+    const headTitle = document.createElement('h3');
+    headTitle.textContent = title;
+    container.appendChild(headTitle)
 
     const colors = ['blue', 'red', 'green', 'yellow'];
     const colorField = createRadioField('colorPicker', 'Pick a Color:', colors);
@@ -515,7 +513,7 @@ function pickSymbolAndColor (callback, data) {
                     'symbol' : symbolField.getPickedValue(),
                     'color': colorField.getPickedValue()
                 };
-                pickSymbolAndColor(callback, data);
+                pickSymbolAndColor(callback, 'Player 2', data);
             } else {
                 container.parentElement.removeChild(container);
                 data.playerTwo = {
@@ -544,7 +542,6 @@ function pickGridSizeModal (data) {
     const container = document.createElement('div');
     container.classList.add('modals');
 
-    p(data);
     const backBtn = backButton(pickPlayerNumberModal, pickGridSizeModal, data);
     container.appendChild(backBtn);
 

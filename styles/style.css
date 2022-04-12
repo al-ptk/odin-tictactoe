@@ -67,3 +67,8 @@
     top: 45px;
     right: 10px;
 }
+
+.p0,
+.p1 {
+    --color: none;
+}
