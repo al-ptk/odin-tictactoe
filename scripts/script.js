@@ -377,7 +377,7 @@ function titleScreen (data) {
     newGame.textContent = 'Let\'s Play!';
     newGame.addEventListener('click', e => {
         root.removeChild(container);
-        pickPlayerNumberModal(pickGridSizeModal, data)
+        pickPlayerNumberModal(pickSymbolAndColor, data)
     });
     container.appendChild(newGame);
     root.appendChild(container)
@@ -403,7 +403,7 @@ function pickPlayerNumberModal (callback, data) {
     onePlayer.addEventListener('click', e => {
         root.removeChild(container);
         data.singlePlayer = true;
-        callback(data);
+        callback(pickGridSizeModal, data);
     })
     container.appendChild(onePlayer);
     const twoPlayers = document.createElement('button');
@@ -411,24 +411,70 @@ function pickPlayerNumberModal (callback, data) {
     twoPlayers.addEventListener('click', e => {
         root.removeChild(container);
         data.singlePlayer = false;
-        callback(data);
+        callback(pickGridSizeModal, data);
     })
     container.appendChild(twoPlayers)
+}
+
+
+function createRadioButton (name, value) {
+    const rdo = document.createElement('input');
+    rdo.setAttribute('type', 'radio');
+    rdo.value = value;
+    rdo.id = value;
+    rdo.name = name;
+    return rdo;
+}
+
+function createRadioLabel (id) {
+    const lbl = document.createElement('label');
+    lbl.setAttribute('for', id);
+    lbl.textContent = id;
+    lbl.style.fontSize = '18px';
+    return lbl;
+}
+
+function createRadioField(id, legendText, items) {
+    const field = document.createElement('fieldset');
+    field.id = id;
+    const legend = document.createElement('legend');
+    legend.textContent = legendText;
+    legend.style.fontSize = '20px';
+    for (const item of items) {
+        const radio = createRadioButton(`${id}Child`, item);
+        field.appendChild(radio);
+        const label = createRadioLabel(item);
+        field.appendChild(label);
+    }
+    field.appendChild(legend);
+    return field;
 }
 
 function pickSymbolAndColor (callback, data) {
     const container = document.createElement('div');
     container.classList.add('modals');
+    container.style.height = 'fit-content';
     root.appendChild(container);
 
-    const playerColorArea = document.createElement('div');
-    const playerColorLabel = document.createElement('label');
-    playerColorLabel.textContent = 'Pick a color:'
-    const playerColorRadio = document.createElement('input');
-    playerColorRadio.setAttribute('type', 'radio')
-    playerColorArea.appendChild(playerColorRadio);
-    playerColorArea.appendChild(playerColorLabel);
-    container.appendChild(playerColorArea);
+    const colors = ['blue', 'red', 'green', 'yellow'];
+    const colorField = createRadioField('colorPicker', 'Pick a Color:', colors);
+    container.appendChild(colorField);
+
+    const symbols = ['X', 'O', '🤣', '😍', '🤔']
+    const symbolField = createRadioField('symbolPicker', 'Pick a Symbol:', symbols)
+    container.appendChild(symbolField);
+
+    const backBtn = backButton(pickPlayerNumberModal, pickSymbolAndColor, data);
+    container.appendChild(backBtn);
+
+    const confirmButton = document.createElement('button');
+    confirmButton.textContent = 'Confirm';
+    confirmButton.style.fontSize = '24px';
+    confirmButton.addEventListener('click', e => {
+        container.parentElement.removeChild(container);
+        callback(data);
+    });
+    container.appendChild(confirmButton);
 }
 
 function backButton (previousModal, currentModal, data) {
@@ -493,4 +539,3 @@ root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
 titleScreen({});
-// pickSymbolAndColor(() => p('salut mortel'), {singlePlayer: false});
