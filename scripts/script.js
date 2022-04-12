@@ -384,7 +384,7 @@ function titleScreen (data) {
 }
 
 function setPlayers (data) {
-    const {gridSize, chainLen, singlePlayer, playerOne} = data;
+    const {gridSize, chainLen, singlePlayer, playerOne, playerTwo} = data;
     p(gridSize);
     const p1 = PlayerFactory(
             'Player 1', 
@@ -397,7 +397,13 @@ function setPlayers (data) {
     if (singlePlayer) {
         p2 = AiFactory(gridSize, chainLen);
     } else {
-        p2 = PlayerFactory('Player 2', 'O', 'red', gridSize, chainLen)
+        p2 = PlayerFactory(
+            'Player 2', 
+            playerTwo.symbol, 
+            playerTwo.color,
+            gridSize,
+            chainLen
+        );
     }
     return [p1, p2];
 }
@@ -503,7 +509,21 @@ function pickSymbolAndColor (callback, data) {
             };
             callback(data);
         } else {
-            p(symbolField.getPickedValue());
+            if (!data.playerOne){
+                container.parentElement.removeChild(container);
+                data.playerOne = {
+                    'symbol' : symbolField.getPickedValue(),
+                    'color': colorField.getPickedValue()
+                };
+                pickSymbolAndColor(callback, data);
+            } else {
+                container.parentElement.removeChild(container);
+                data.playerTwo = {
+                    'symbol' : symbolField.getPickedValue(),
+                    'color': colorField.getPickedValue()
+                };
+                callback(data);
+            }
         }
     });
     container.appendChild(confirmButton);
@@ -514,7 +534,6 @@ function backButton (previousModal, currentModal, data) {
     backButton.textContent = '←';
     backButton.classList.add('backButton');
     backButton.addEventListener('click', e => {
-        p(data);
         previousModal(currentModal, data)
         e.target.parentNode.parentNode.removeChild(e.target.parentNode);
     })
