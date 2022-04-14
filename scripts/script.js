@@ -538,6 +538,19 @@ function backButton (previousModal, currentModal, data) {
     return backButton;
 }
 
+function gridSizeButton (edgeSize, chainLen, parent, data) {
+    const btn = document.createElement('button');
+    btn.textContent = `${edgeSize}x${edgeSize}`;
+    btn.addEventListener('click', e => {
+        parent.parentNode.removeChild(parent);
+        data.gridSize = edgeSize;
+        data.chainLen = chainLen;
+        data.players = setPlayers(data)
+        const newMatch = MatchFactory(data.gridSize, data.players);
+    });
+    return parent.appendChild(btn);
+}
+
 function pickGridSizeModal (data) {
     const container = document.createElement('div');
     container.classList.add('modals');
@@ -545,38 +558,9 @@ function pickGridSizeModal (data) {
     const backBtn = backButton(pickPlayerNumberModal, pickGridSizeModal, data);
     container.appendChild(backBtn);
 
-    const btn3 = document.createElement('button');
-    btn3.textContent = '3x3';
-    btn3.addEventListener('click', e => {
-        root.removeChild(container);
-        data.gridSize = 3;
-        data.chainLen = 3;
-        data.players = setPlayers(data)
-        const newMatch = MatchFactory(data.gridSize, data.players);
-    });
-    container.appendChild(btn3);
-
-    const btn5 = document.createElement('button');
-    btn5.textContent = '5x5';
-    btn5.addEventListener('click', e => {
-        root.removeChild(container);
-        data.gridSize = 5;
-        data.chainLen = 4;
-        data.players = setPlayers(data);
-        const newMatch = MatchFactory(data.gridSize, data.players);
-    });
-    container.appendChild(btn5);
-
-    const btn7 = document.createElement('button');
-    btn7.textContent = '7x7';
-    btn7.addEventListener('click', e => {
-        root.removeChild(container);
-        data.gridSize = 7;
-        data.chainLen = 4;
-        data.players = setPlayers(data)
-        const newMatch = MatchFactory(data.gridSize, data.players);
-    });
-    container.appendChild(btn7);
+    const btn3 = gridSizeButton(3, 3, container, data);
+    const btn5 = gridSizeButton(5, 4, container, data);
+    const btn7 = gridSizeButton(7, 4, container, data);
 
     root.appendChild(container);
 }
@@ -587,4 +571,3 @@ root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
 titleScreen({});
-// pickSymbolAndColor(()=>{}, {singlePlayer: true});
