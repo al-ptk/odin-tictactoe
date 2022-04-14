@@ -9,6 +9,7 @@
 }
 
 * {
+    font-family: sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -89,7 +90,6 @@
 .super-text {
     margin-bottom: 30px;
     font-size: 80px;
-    font-family: sans-serif;
     font-weight: bolder;
     color: rgb(204, 3, 154);
     text-shadow: -2px 2px 2px rgb(255, 141, 35);
@@ -98,7 +98,6 @@
 .tic-text,
 .tac-text,
 .toe-text {
-    font-family: sans-serif;
     text-shadow: -4px 4px 2px black;
     font-weight: bold;
     font-size: 1.5rem;
@@ -158,4 +157,37 @@
 
 .twoPlayersSelect {
     background-color: var(--ligth-red);
+}
+
+/* pickSymbolAndColor Modal */
+
+.symbol-n-color {
+    /* border: 1px solid white; */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--light-silver);
+    gap: 50px;
+}
+
+.symbol-n-color fieldset {
+    border-style: none;
+}
+
+.symbol-n-color [type="radio"] {
+    position: absolute;
+    top: 20px;
+    left: 5px;
+    /* top: -1000px; */
+}
+
+.symbol-n-color label {
+    position: relative;
+    margin: 0 10px;
+}
+
+.symbol-n-color label:focus-within {
+    border: 1px solid white;
 }

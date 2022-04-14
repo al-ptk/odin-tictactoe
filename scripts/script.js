@@ -462,10 +462,10 @@ function createRadioButton (name, value) {
     return rdo;
 }
 
-function createRadioLabel (id) {
+function createRadioLabel (item) {
     const lbl = document.createElement('label');
-    lbl.setAttribute('for', id);
-    lbl.textContent = id;
+    lbl.setAttribute('for', item);
+    lbl.textContent = item;
     lbl.style.fontSize = '18px';
     return lbl;
 }
@@ -478,16 +478,14 @@ function createRadioField(id, legendText, items) {
     legend.style.fontSize = '20px';
     for (const item of items) {
         const radio = createRadioButton(`${id}Child`, item);
-        field.appendChild(radio);
         const label = createRadioLabel(item);
+        label.appendChild(radio);
         field.appendChild(label);
     }
     field.appendChild(legend);
-
     function getDOM () {
         return field;
     }
-
     function getPickedValue () {
         for (const item of field.childNodes){
             if (item.checked) {
@@ -495,7 +493,6 @@ function createRadioField(id, legendText, items) {
             }
         }
     }
-
     return {
         getDOM,
         getPickedValue
@@ -504,8 +501,7 @@ function createRadioField(id, legendText, items) {
 
 function pickSymbolAndColor (callback, title, data) {
     const container = document.createElement('div');
-    container.classList.add('modals');
-    container.style.height = 'fit-content';
+    container.classList.add('symbol-n-color');
     root.appendChild(container);
 
     const headTitle = document.createElement('h3');
@@ -598,5 +594,6 @@ const root = document.createElement('div');
 root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
-// titleScreen({});
-pickPlayerNumberModal();
+titleScreen({});
+// pickPlayerNumberModal();
+// pickSymbolAndColor(()=>{},'Player 1', {});
