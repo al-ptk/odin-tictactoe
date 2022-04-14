@@ -207,6 +207,7 @@ function MatchFactory (gridEdge, players) {
     const boardWidget = (function (gridEdge) {
         HTMLroot.style.setProperty('--gridEdge', gridEdge);
         const container = document.createElement('div');
+        container.classList.add('board-screen');
         const boardContainer = document.createElement('div')
         boardContainer.classList.add('board-container')
         container.appendChild(boardContainer);
@@ -245,11 +246,11 @@ function MatchFactory (gridEdge, players) {
 
     function playerTurn (event) {
         if (event.target.textContent !== '') return;
-        event.target.classList.add(`p${currentTurn}`);
         const index = event.target.id.slice(1);
         board[index] = currentTurn; 
         const victory = players[currentTurn].registerMove(index)
         updateWidget();
+        p(board);
         const didWin = checkForVictory(victory);
         if (didWin) {
             return;
@@ -257,7 +258,6 @@ function MatchFactory (gridEdge, players) {
         if (players[1].getName() === 'Computer'){
             const aiPick = players[1].getValidInput(getEmptySpaces());
             board[aiPick] = currentTurn;
-            document.querySelector(`#b${aiPick}`).classList.add(`p${currentTurn}`)
             const victory = players[currentTurn].registerMove(aiPick)
             updateWidget();
             checkForVictory(victory);
@@ -312,6 +312,7 @@ function MatchFactory (gridEdge, players) {
                 btn.textContent = '';
             }
             if (board[i] === 0) {
+                p(players);
                 btn.textContent = players[0].getSymbol();
                 btn.style.color = players[0].getColor();
             }
