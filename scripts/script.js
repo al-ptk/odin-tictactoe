@@ -371,11 +371,25 @@ function AiFactory (gridEdge, chainLen) {
         });
 };
 
+function makeHeading (parent, text, CSSclass) {
+    const heading = document.createElement('span');
+    heading.classList.add(CSSclass);
+    heading.textContent = text;
+    return parent.appendChild(heading);
+}
+
 function titleScreen (data) {
     const container = document.createElement('div');
-    container.classList.add('modals');
+    container.classList.add('titlescreen');
+
+    const _super = makeHeading (container, 'SUPER', 'super-text');
+    const tic = makeHeading (container, 'TIC', 'tic-text');
+    const tac = makeHeading (container, 'TAC', 'tac-text');
+    const toe = makeHeading (container, 'TOE', 'toe-text');
+
     const newGame = document.createElement('button');
     newGame.textContent = 'Let\'s Play!';
+    newGame.classList.add('newGameButton');
     newGame.addEventListener('click', e => {
         root.removeChild(container);
         pickPlayerNumberModal(pickSymbolAndColor, 'Player 1', data);
@@ -393,7 +407,6 @@ function setPlayers (data) {
             gridSize, 
             chainLen);
             
-    
     let p2;
     if (singlePlayer) {
         p2 = AiFactory(gridSize, chainLen);
@@ -413,17 +426,24 @@ function setPlayers (data) {
 function pickPlayerNumberModal (callback, title, data) {
     const container = document.createElement('div');
     root.appendChild(container);
-    container.classList.add('modals');
+    container.classList.add('playerNumberSelect');
+
+    const back = backButton(titleScreen, pickPlayerNumberModal, {});
+    container.appendChild(back);
+
     const onePlayer = document.createElement('button');
     onePlayer.textContent = '1 Player';
+    onePlayer.classList.add('onePlayerSelect');
     onePlayer.addEventListener('click', e => {
         root.removeChild(container);
         data.singlePlayer = true;
         callback(pickGridSizeModal, title, data);
     })
     container.appendChild(onePlayer);
+
     const twoPlayers = document.createElement('button');
     twoPlayers.textContent = '2 Players';
+    twoPlayers.classList.add('twoPlayersSelect');
     twoPlayers.addEventListener('click', e => {
         root.removeChild(container);
         data.singlePlayer = false;
@@ -578,4 +598,5 @@ const root = document.createElement('div');
 root.id = 'appRoot';
 const body = document.querySelector('body');
 body.appendChild(root);
-titleScreen({});
+// titleScreen({});
+pickPlayerNumberModal();

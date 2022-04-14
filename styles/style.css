@@ -1,5 +1,11 @@
 :root {
     --gridEdge: 0;
+    --light-silver: rgb(216, 216, 216);
+    --graphite: rgb(73, 73, 73);
+    --dark-graphite: rgb(39, 39, 39);
+    --light-blue: rgb(133, 192, 202);
+    --light-green: rgb(125, 192, 128);
+    --ligth-red: rgb(224, 46, 46);
 }
 
 * {
@@ -15,7 +21,7 @@
     left: 0;
     height: 100vh;
     width: 100vw;
-    background-color: rgb(58, 165, 214);
+    background-color: var(--graphite);
 }
 
 .board-container{
@@ -68,7 +74,88 @@
     right: 10px;
 }
 
-.p0,
-.p1 {
-    --color: none;
+/* Title Screen */
+
+.titlescreen {
+    color: var(--light-silver);
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40%;
+}
+
+.super-text {
+    margin-bottom: 30px;
+    font-size: 80px;
+    font-family: sans-serif;
+    font-weight: bolder;
+    color: rgb(204, 3, 154);
+    text-shadow: -2px 2px 2px rgb(255, 141, 35);
+}
+
+.tic-text,
+.tac-text,
+.toe-text {
+    font-family: sans-serif;
+    text-shadow: -4px 4px 2px black;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.tic-text {
+    align-self: flex-start;
+    margin-left: 30%;
+    color: var(--light-blue);
+}
+
+.tac-text {
+    color: var(--ligth-red);
+}
+
+.toe-text {
+    align-self: flex-end;
+    margin-right: 30%;
+    color: var(--light-green);
+}
+
+.newGameButton {
+    background-color: var(--light-silver);
+    border-style: none;
+    padding: 15px;
+    margin-top: 60px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+}
+
+/* playerNumberSelect Modal */
+
+.playerNumberSelect {
+    /* border: 1px solid white; */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.onePlayerSelect,
+.twoPlayersSelect {
+    padding: 10px;
+    width: 70vw;
+    border: 3px solid white;
+    border-radius: 15px;
+    font-size: 36px;
+    font-weight: bolder;
+    color: var(--dark-graphite);
+}
+
+.onePlayerSelect {
+    background-color: var(--light-blue);
+}
+
+.twoPlayersSelect {
+    background-color: var(--ligth-red);
 }
