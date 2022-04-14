@@ -247,7 +247,7 @@ function MatchFactory (gridEdge, players) {
         if (event.target.textContent !== '') return;
         event.target.classList.add(`p${currentTurn}`);
         const index = event.target.id.slice(1);
-        board[index] = players[currentTurn].getSymbol();
+        board[index] = currentTurn; 
         const victory = players[currentTurn].registerMove(index)
         updateWidget();
         const didWin = checkForVictory(victory);
@@ -256,7 +256,7 @@ function MatchFactory (gridEdge, players) {
         }
         if (players[1].getName() === 'Computer'){
             const aiPick = players[1].getValidInput(getEmptySpaces());
-            board[aiPick] = players[currentTurn].getSymbol();
+            board[aiPick] = currentTurn;
             document.querySelector(`#b${aiPick}`).classList.add(`p${currentTurn}`)
             const victory = players[currentTurn].registerMove(aiPick)
             updateWidget();
@@ -310,6 +310,14 @@ function MatchFactory (gridEdge, players) {
 
             if (board[i] === '') {
                 btn.textContent = '';
+            }
+            if (board[i] === 0) {
+                btn.textContent = players[0].getSymbol();
+                btn.style.color = players[0].getColor();
+            }
+            if (board[i] === 1) {
+                btn.textContent = players[1].getSymbol();
+                btn.style.color = players[1].getColor();
             }
         }
     };
